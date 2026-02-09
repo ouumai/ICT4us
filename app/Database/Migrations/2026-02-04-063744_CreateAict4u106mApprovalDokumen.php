@@ -58,7 +58,7 @@ class CreateAict4u106mApprovalDokumen extends Migration
 
         $attributes = [
             'ENGINE'  => 'InnoDB',
-            'COLLATE' => 'utf8mb4_0900_ai_ci'
+            'COLLATE' => 'utf8mb4_general_ci'
         ];
 
         $this->forge->createTable('aict4u106m_approval_dokumen', true, $attributes);

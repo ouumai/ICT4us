@@ -62,7 +62,7 @@ class CreateFaqTable extends Migration
 
         $attributes = [
             'ENGINE'  => 'InnoDB',
-            'COLLATE' => 'utf8mb4_0900_ai_ci'
+            'COLLATE' => 'utf8mb4_general_ci'
         ];
 
         $this->forge->createTable('faq', true, $attributes);

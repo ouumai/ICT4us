@@ -66,7 +66,7 @@ class CreateServisTable extends Migration
         ]);
 
         $this->forge->addKey('idservis', true);
-        $this->forge->createTable('aict4u103dservis');
+        $this->forge->createTable('aict4u103dservis', true, ['ENGINE' => 'InnoDB', 'COLLATE' => 'utf8mb4_general_ci']);
     }
 
     public function down()

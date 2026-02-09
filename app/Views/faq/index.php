@@ -190,7 +190,6 @@
 
         <div id="faqContainer">
             <div class="text-center py-5">
-                <img src="https://illustrations.popsy.co/slate/searching.svg" alt="Search" style="width: 150px;" class="mb-4 opacity-50">
                 <h5 class="text-slate-400">Pilih servis untuk memaparkan FAQ</h5>
             </div>
         </div>

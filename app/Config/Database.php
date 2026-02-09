@@ -28,7 +28,7 @@ class Database extends Config
         'DSN'          => '',
         'hostname'     => 'localhost',
         'username'     => '',
-        'password'     => 'Reko2023#',
+        'password'     => '',
         'database'     => 'ict4u',
         'DBDriver'     => 'MySQLi',
         'DBPrefix'     => '',

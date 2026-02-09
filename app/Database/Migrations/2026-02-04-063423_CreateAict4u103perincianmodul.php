@@ -59,7 +59,7 @@ class CreateAict4u103dperincianmodul extends Migration
         // Table Attributes (Engine and Collation)
         $attributes = [
             'ENGINE'  => 'InnoDB',
-            'COLLATE' => 'utf8mb4_0900_ai_ci'
+            'COLLATE' => 'utf8mb4_general_ci'
         ];
 
         $this->forge->createTable('aict4u103dperincianmodul', true, $attributes);

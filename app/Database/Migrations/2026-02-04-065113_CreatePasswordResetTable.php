@@ -31,7 +31,7 @@ class CreatePasswordResetsTable extends Migration
         // Atribut jadual
         $attributes = [
             'ENGINE'  => 'InnoDB',
-            'COLLATE' => 'utf8mb4_0900_ai_ci'
+            'COLLATE' => 'utf8mb4_general_ci'
         ];
 
         $this->forge->createTable('password_resets', true, $attributes);
