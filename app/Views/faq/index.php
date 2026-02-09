@@ -7,6 +7,11 @@
         --soft-slate: #f8fafc;
     }
 
+    body {
+        background-color: #f1f5f9;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
     .faq-wrapper {
         background: #ffffff;
         border-radius: 24px;
