@@ -114,7 +114,7 @@
             </div>
         </div>
         <div class="mt-4 md:mt-0">
-            <button id="btnTambahModal" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-xl font-bold transition flex items-center shadow-lg disabled:opacity-50" data-bs-toggle="modal" data-bs-target="#modalTambah" disabled>
+            <button id="btnTambahModal" class="bg-blue-500 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-bold transition flex items-center shadow-lg disabled:opacity-50" data-bs-toggle="modal" data-bs-target="#modalTambah" disabled>
                 <i class="bi bi-cloud-plus-fill me-2"></i> Muat Naik Dokumen
             </button>
         </div>
@@ -167,7 +167,9 @@
                     <label class="block text-sm font-bold text-slate-700 mb-2">Pilih Fail (PDF Sahaja - Maks 10MB)</label>
                     <input type="file" name="file" class="block w-full text-sm text-slate-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:bg-indigo-50 file:text-indigo-700" accept="application/pdf" required>
                 </div>
-                <button type="submit" class="btn-submit-blue shadow-lg shadow-indigo-200">Hantar Dokumen</button>
+                <button type="submit" class="w-full bg-blue-500 hover:bg-blue-700 text-white py-3 rounded-xl font-bold transition shadow-lg shadow-blue-500/30">
+                    Hantar Dokumen
+                </button>
             </form>
         </div>
     </div>
@@ -206,7 +208,7 @@
             $('#dokumenArea').html(`
                 <div class="text-center py-20">
                     <div class="bg-gray-50 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm">
-                    <i class="bi bi-filter text-4xl text-black-500"></i>
+                        <i class="bi bi-filter text-4xl text-black-500"></i>
                     </div>
                     <h5 class="text-slate-900 font-bold mb-1">Sila Pilih Servis</h5>
                     <p class="text-slate-500 font-medium">Pilih kategori servis di atas untuk memaparkan senarai dokumen.</p>
