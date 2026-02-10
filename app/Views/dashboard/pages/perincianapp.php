@@ -13,7 +13,7 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <style>
-    /* 1. Global Font */
+    /* 1. Global Font Setup */
     body, .content-wrapper, .main-sidebar, h1, h2, h3, h4, h5, h6, p, span, div, table, input, textarea, button {
         font-family: 'Plus Jakarta Sans', sans-serif !important;
     }
@@ -45,24 +45,12 @@
         font-weight: 500;
     }
     .input-modern:focus { 
-        border-color: #4f46e5; 
+        border-color: #3b82f6; 
         background-color: #ffffff;
-        box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1); 
+        box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1); 
     }
 
-    /* 5. Buttons */
-    .btn-submit-blue {
-        background-color: #4f46e5;
-        color: white;
-        padding: 12px 28px;
-        border-radius: 12px;
-        font-weight: 700;
-        border: none;
-        transition: all 0.2s;
-        box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
-    }
-    .btn-submit-blue:hover { transform: translateY(-2px); background-color: #4338ca; }
-    
+    /* 5. Reset Button Style */
     .btn-reset {
         color: #64748b;
         font-weight: 700;
@@ -70,9 +58,9 @@
         border-radius: 12px;
         transition: 0.2s;
     }
-    .btn-reset:hover { background: #f1f5f9; color: #1e293b; }
+    .btn-reset:hover { background: #FEEBE7; color: #1e293b; }
 
-    /* CKEditor Tweaks */
+    /* CKEditor Customization */
     .ck-editor__main>.ck-editor__editable { min-height: 250px; border-radius: 0 0 12px 12px !important; padding: 10px 20px !important; }
     .ck.ck-editor__top { border-radius: 12px 12px 0 0 !important; border-bottom: none !important; }
     
@@ -82,8 +70,8 @@
 <div class="container-fluid py-4">
     <div class="glass-card p-8 mb-8 flex flex-col md:flex-row items-center justify-between">
         <div class="flex items-center gap-4">
-            <div class="bg-indigo-100 p-3 rounded-2xl">
-                <i class="bi bi-collection-fill text-3xl text-indigo-600"></i>
+            <div class="bg-indigo-50 p-3 rounded-2xl">
+                <i class="bi bi-collection-fill text-3xl text-indigo-500"></i>
             </div>
             <div>
                 <h1 class="text-3xl font-extrabold text-slate-900 mb-1">Sistem Perincian Modul</h1>
@@ -94,7 +82,7 @@
 
     <div class="glass-card p-6 mb-8 max-w-md">
         <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-2">
-            <i class="bi bi-tag-fill"></i> Pilih Servis Utama
+            <i class="bi bi-tag-fill text-black-400"></i> Pilih Servis Utama
         </label>
         <div class="relative">
             <select id="dropdownServis" class="w-full appearance-none bg-white border border-slate-200 p-3 rounded-xl focus:outline-none font-semibold text-slate-600 cursor-pointer shadow-sm">
@@ -150,8 +138,8 @@
                 </div>
 
                 <div class="flex justify-end items-center gap-4 pt-6 border-t border-slate-100">
-                    <button type="button" id="btnReset" class="btn-reset">Reset</button>
-                    <button type="submit" class="btn-submit-blue">
+                    <button type="button" id="btnReset" class="btn-reset text-red">Reset</button>
+                    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white px-8 py-3 rounded-xl font-bold transition shadow-lg shadow-blue-500/30">
                         <i class="bi bi-check2-circle me-2"></i> Simpan Perubahan
                     </button>
                 </div>
@@ -165,14 +153,14 @@ $(document).ready(function() {
     let editor;
     let originalData = {};
 
-    // 1. Initialize CKEditor
+    // Initialize CKEditor
     ClassicEditor.create(document.querySelector('#description'), {
         toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'undo', 'redo']
     }).then(newEditor => {
         editor = newEditor;
     }).catch(error => console.error(error));
 
-    // 2. Dropdown Change Handler
+    // Handle Dropdown Change
     $('#dropdownServis').change(function() {
         const id = $(this).val();
         const selectedOption = $(this).find('option:selected');
@@ -183,11 +171,9 @@ $(document).ready(function() {
             return;
         }
 
-        // Tunjuk form, sorok empty state
         $('#emptyState').addClass('hidden');
         $('#formArea').removeClass('hidden');
 
-        // Isi data basic dari attributes
         const name = selectedOption.data('name');
         const info = selectedOption.data('infourl');
         const mohon = selectedOption.data('mohonurl');
@@ -197,36 +183,29 @@ $(document).ready(function() {
         $('#infourl').val(info);
         $('#mohonurl').val(mohon);
 
-        // Fetch description via AJAX
         editor.setData('<p><i>Memuatkan data...</i></p>');
         $.get(`<?= base_url('perincianmodul/getServis') ?>/${id}`, function(res) {
             const descContent = (res.desc && res.desc.description) ? res.desc.description : '';
             editor.setData(descContent);
             
-            // Simpan data asal untuk fungsi reset
             originalData = {
                 name: name,
                 info: info,
                 mohon: mohon,
                 desc: descContent
             };
-        }).fail(function() {
-            editor.setData('<p class="text-red-500">Ralat memuatkan data description.</p>');
         });
     });
 
-    // 3. Reset Button Logic
+    // Reset Logic
     $('#btnReset').click(function() {
         if (!originalData.name) return;
-
         Swal.fire({
             title: 'Reset Semula?',
             text: "Data akan dikembalikan kepada maklumat asal.",
             icon: 'question',
             showCancelButton: true,
-            confirmButtonColor: '#4f46e5',
-            cancelButtonColor: '#94a3b8',
-            confirmButtonText: 'Ya, Reset'
+            confirmButtonColor: '#3b82f6'
         }).then((result) => {
             if (result.isConfirmed) {
                 $('#namaservis').val(originalData.name);
@@ -237,25 +216,9 @@ $(document).ready(function() {
         });
     });
 
-    // 4. Form Validation & Server Flashdata
-    const keyboardPattern = /^[a-zA-Z0-9\s!"#$%&'()*+,-./:;<=>?@[\\\]^_`{|}~]*$/;
-    
-    $('#servisForm').submit(function(e) {
-        if (!keyboardPattern.test($('#namaservis').val())) {
-            e.preventDefault();
-            Swal.fire({ icon: 'error', title: 'Ralat Validasi', text: 'Nama servis mengandungi aksara tidak sah.' });
-        } else if (!editor.getData().trim()) {
-            e.preventDefault();
-            Swal.fire({ icon: 'warning', title: 'Perincian Kosong', text: 'Sila isi bahagian description.' });
-        }
-    });
-
+    // Alert Handling
     <?php if(session()->getFlashdata('success')): ?>
-        Swal.fire({ icon: 'success', title: 'Berjaya!', text: '<?= session()->getFlashdata('success') ?>', confirmButtonColor: '#4f46e5' });
-    <?php endif; ?>
-    
-    <?php if(session()->getFlashdata('error')): ?>
-        Swal.fire({ icon: 'error', title: 'Ralat!', text: '<?= session()->getFlashdata('error') ?>' });
+        Swal.fire({ icon: 'success', title: 'Berjaya!', text: '<?= session()->getFlashdata('success') ?>', confirmButtonColor: '#3b82f6' });
     <?php endif; ?>
 });
 </script>
