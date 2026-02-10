@@ -121,8 +121,8 @@
     <div class="grid grid-cols-1 md:grid-cols-12 gap-4 mb-8">
         <div class="md:col-span-3 relative">
             <select id="sortOrder" onchange="sortData()" class="modern-input-size w-full appearance-none px-4 focus:outline-none transition text-slate-700 cursor-pointer">
-                <option value="asc">Terlama (ID)</option>
-                <option value="desc">Terbaru (ID)</option>
+                <option value="asc">Terdahulu (ID)</option>
+                <option value="desc">Terkini (ID)</option>
             </select>
             <i class="bi bi-chevron-down absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 pointer-events-none"></i>
         </div>
