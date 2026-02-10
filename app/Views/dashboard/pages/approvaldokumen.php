@@ -157,7 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <td colspan="6" class="p-12 text-center">
                             <div class="flex flex-col items-center justify-center">
                                 <div class="bg-red-50 p-4 rounded-full mb-3">
-                                    <i class="bi bi-folder2-open text-4xl text-red-500"></i>
+                                    <i class="bi bi-folder-x text-4xl text-red-500"></i>
                                 </div>
                                 <h3 class="text-lg font-bold text-slate-600">Tiada Dokumen</h3>
                                 <p class="text-sm text-slate-400">Tiada rekod dijumpai.</p>
