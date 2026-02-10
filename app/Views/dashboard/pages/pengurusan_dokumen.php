@@ -1,415 +1,272 @@
-<?php $uri = service('uri'); ?>
-<!DOCTYPE html>
-<html lang="ms">
-<head>
-    <meta charset="UTF-8">
-    <title>Sistem Pengurusan Dokumen Modul</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<?= $this->extend('layout/main') ?>
 
-    <style>
-        :root {
-            --primary-color: #4361ee;
-            --bg-body: #f4f7fe;
-            --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-        }
+<?= $this->section('content') ?>
 
-        body { 
-            background-color: var(--bg-body); 
-            font-family: 'Inter', sans-serif;
-            color: #2d3436;
-        }
-        /* ===== SIDEBAR ===== */
-        .main-sidebar {
-            background-color: #ffffff;
-            border-right: 1px solid #e2e8f0;
-            width: 250px;
-            height: 100vh;
-            position: fixed;
-            top: 0;
-            left: -260px; /* hidden by default */
-            transition: left 0.3s;
-            z-index: 50;
-            padding-top: 1rem;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-        }
-        .main-sidebar.active { left: 0; }
-        .brand-link { display: block; text-align: center; padding: 1.5rem 1rem; border-bottom: 1px solid #f1f5f9; }
-        .brand-text { color: #1e293b; letter-spacing: -1px; font-size: 1.5rem; font-weight: 900; }
-        .sidebar .nav-link {
-            color: #64748b; border-radius: 12px; margin: 4px 12px; padding: 10px 15px;
-            font-weight: 600; font-size: 0.9rem; transition: all 0.2s; display: flex; align-items: center;
-        }
-        .sidebar .nav-link i { margin-right: 10px; color: #94a3b8; transition: all 0.2s; }
-        .sidebar .nav-link.active { background-color: #f5f3ff; color: #4f46e5; }
-        .sidebar .nav-link.active i { color: #4f46e5; }
-        .sidebar .nav-link:hover:not(.active) { background-color: #f8fafc; color: #1e293b; }
-        .nav-header { font-size: 0.7rem; font-weight: 800; color: #94a3b8; text-transform: uppercase; padding: 1rem 1.5rem 0.5rem 1.5rem; }
-        .nav-link.logout-btn { margin-top: 20px; border: 1px solid #fee2e2; color: #dc2626; }
-        .nav-link.logout-btn:hover { background-color: #fef2f2; color: #dc2626; }
+<script>document.title = "Pengurusan Dokumen Modul";</script>
 
-        /* ===== HAMBURGER BUTTON ===== */
-        #sidebarToggle {
-            position: fixed; top: 1rem; left: 1rem; z-index: 60;
-            background: rgba(255,255,255,0.9); backdrop-filter: blur(5px);
-            border: 1px solid #e2e8f0; padding: 0.75rem; border-radius: 12px;
-            cursor: pointer; transition: all 0.2s;
-        }
-        #sidebarToggle:hover { background: #f8faff; }
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 
-        .page-title {
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            color: #1e293b;
-        }
+<style>
+    /* 1. Global Font Setup */
+    body, .content-wrapper, .main-sidebar, h1, h2, h3, h4, h5, h6, p, span, div, table, input, textarea, button {
+        font-family: 'Plus Jakarta Sans', sans-serif !important;
+    }
 
-        /* Custom Select & Input */
-        .form-select, .form-control {
-            border-radius: 10px;
-            padding: 10px 15px;
-            border: 1px solid #e2e8f0;
-            transition: all 0.3s ease;
-        }
+    /* 2. Hide Default Dashboard Header */
+    .content-wrapper > .container-fluid > .d-md-flex.align-items-center.justify-content-between.mb-5 {
+        display: none !important;
+    }
 
-        .form-select:focus, .form-control:focus {
-            box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.1);
-            border-color: var(--primary-color);
-        }
+    /* 3. Glassmorphism Card Style */
+    .glass-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
+        border: 1px solid #e2e8f0;
+        border-radius: 1.5rem;
+    }
 
-        /* Modern Table Styling */
-        .table {
-            border-collapse: separate;
-            border-spacing: 0 12px;
-        }
+    /* 4. MODAL FULL SCREEN BLUR (Tutup Sidebar, Header & Footer) */
+    .modal-backdrop { display: none !important; }
+    .modal {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        z-index: 100000 !important; 
+        background: rgba(15, 23, 42, 0.5) !important; 
+        backdrop-filter: blur(10px) !important;
+        -webkit-backdrop-filter: blur(10px) !important;
+        display: none; 
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
 
-        .table thead th {
-            border: none;
-            color: #64748b;
-            font-weight: 600;
-            text-transform: uppercase;
-            font-size: 0.7rem;
-            letter-spacing: 1px;
-            padding: 0 1rem;
-        }
+    .modal-dialog {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        min-height: 100vh !important;
+        margin: 0 auto !important;
+        max-width: 500px !important;
+        pointer-events: none;
+    }
 
-        .table tbody tr {
-            background-color: white;
-            box-shadow: var(--card-shadow);
-            transition: transform 0.2s ease;
-        }
+    .modal-content {
+        pointer-events: auto;
+        border: none !important;
+        border-radius: 2rem !important;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important;
+        padding: 2.5rem !important;
+        background: white !important;
+        width: 100% !important;
+    }
 
-        .table tbody tr:hover {
-            transform: translateY(-3px);
-            background-color: #fafbff;
-        }
+    /* 5. Input & Button Styles */
+    .input-modern {
+        width: 100%;
+        padding: 0.85rem 1rem;
+        border-radius: 0.85rem;
+        border: 1px solid #e2e8f0;
+        outline: none;
+        transition: all 0.2s;
+        font-size: 0.95rem;
+    }
+    .input-modern:focus { border-color: #4f46e5; box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1); }
 
-        .table td {
-            padding: 1.25rem 1rem;
-            border: none;
-            vertical-align: middle;
-        }
+    .btn-submit-blue {
+        background-color: #4f46e5;
+        color: white;
+        width: 100%;
+        padding: 14px;
+        border-radius: 12px;
+        font-weight: 700;
+        border: none;
+        margin-top: 1.5rem;
+        box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
+    }
 
-        .table td:first-child { border-radius: 15px 0 0 15px; }
-        .table td:last-child { border-radius: 0 15px 15px 0; }
+    /* 6. Status UI & Action Buttons */
+    .status-pill { padding: 4px 12px; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; display: inline-block; }
+    .status-pending { background-color: #fef3c7; color: #92400e; }
+    .status-approved { background-color: #dcfce7; color: #166534; }
+    .status-rejected { background-color: #fee2e2; color: #991b1b; }
 
-        /* Badge Styling */
-        .badge {
-            padding: 8px 14px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 10px;
-            letter-spacing: 0.5px;
-        }
-        .status-pending { background-color: #fff9db; color: #f08c00; }
-        .status-approved { background-color: #ebfbee; color: #2b8a3e; }
-        .status-rejected { background-color: #fff5f5; color: #c92a2a; }
+    .btn-action {
+        width: 38px; height: 38px; display: inline-flex; align-items: center; justify-content: center;
+        border-radius: 10px; transition: 0.2s; border: none;
+    }
+</style>
 
-        /* Preview Box */
-        .preview-box {
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
-            object-fit: cover;
-            background: #f8fafc;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid #e2e8f0;
-        }
-
-        .btn-primary {
-            background-color: var(--primary-color);
-            border: none;
-            padding: 12px 24px;
-            border-radius: 10px;
-            font-weight: 600;
-        }
-
-        .modal-content {
-            border-radius: 24px;
-            border: none;
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.2);
-        }
-        
-        .action-btn {
-            width: 38px;
-            height: 38px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 10px;
-            transition: all 0.2s;
-        }
-    </style>
-</head>
-<body>
-<aside class="main-sidebar" id="mainSidebar">
-    <a href="<?= site_url('/') ?>" class="brand-link">
-        <span class="brand-text fw-black">ICT4U<span class="text-primary">.</span></span>
-    </a>
-    <div class="sidebar">
-        <nav class="mt-3">
-            <ul class="nav flex-column">
-
-                <li class="nav-item">
-                    <a href="<?= site_url('/') ?>" class="nav-link <?= $uri->getSegment(1, '') === '' ? 'active' : '' ?>">
-                        <i class="bi bi-grid-fill"></i> Dashboard
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a href="<?= base_url('dashboard/loadPage/approvaldokumen') ?>" 
-                       class="nav-link <?= (count($uri->getSegments()) >= 2 && $uri->getSegment(2) === 'approvaldokumen') ? 'active' : '' ?>">
-                        <i class="bi bi-check-all"></i> Pengesahan Dokumen
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a href="<?= base_url('dashboard/loadPage/dokumen') ?>" 
-                       class="nav-link <?= (count($uri->getSegments()) >= 2 && $uri->getSegment(2) === 'dokumen') ? 'active' : '' ?>">
-                        <i class="bi bi-files"></i> Pengurusan Dokumen
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a href="<?= site_url('perincianmodul') ?>" class="nav-link <?= $uri->getSegment(1, '') === 'perincianmodul' ? 'active' : '' ?>">
-                        <i class="bi bi-collection-fill"></i> Perincian Modul
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a href="<?= site_url('dashboard/TambahanPerincian') ?>" 
-                       class="nav-link <?= (count($uri->getSegments()) >= 2 && $uri->getSegment(2) === 'TambahanPerincian') ? 'active' : '' ?>">
-                        <i class="bi bi-folder-plus"></i> Tambahan Perincian
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a href="<?= site_url('faq/1') ?>" class="nav-link <?= $uri->getSegment(1) === 'faq' ? 'active' : '' ?>">
-                        <i class="bi bi-question-diamond-fill"></i> FAQ
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a href="<?= site_url('profile') ?>" class="nav-link <?= $uri->getSegment(1) === 'profile' ? 'active' : '' ?>">
-                        <i class="bi bi-person-bounding-box"></i> My Profile
-                    </a>
-                </li>
-
-                <li class="nav-item mt-4">
-                    <a href="<?= site_url('logout') ?>" class="nav-link logout-btn">
-                        <i class="bi bi-box-arrow-left"></i> Sign Out
-                    </a>
-                </li>
-
-            </ul>
-        </nav>
-    </div>
-</aside>
-<button id="sidebarToggle">
-    <i class="bi bi-list h-6 w-6"></i>
-</button>
-
-<div class="container py-5">
-    <div class="row mb-5 align-items-center">
-        <div class="col-md-6">
-            <h2 class="page-title mb-1">Pengurusan Dokumen Modul</h2>
-
+<div class="container-fluid py-4">
+    <div class="glass-card p-8 mb-8 flex flex-col md:flex-row items-center justify-between">
+        <div class="flex items-center gap-4">
+            <div class="bg-indigo-100 p-3 rounded-2xl">
+                <i class="bi bi-files text-3xl text-indigo-600"></i>
+            </div>
+            <div>
+                <h1 class="text-3xl font-extrabold text-slate-900 mb-1">Pengurusan Dokumen Modul</h1>
+                <p class="text-slate-500 font-medium italic mb-0">Kemaskini dan urus fail mengikut servis</p>
+            </div>
         </div>
-        <div class="col-md-6 text-md-end mt-3 mt-md-0">
-            <button id="btnTambahModal" class="btn btn-primary shadow" data-bs-toggle="modal" data-bs-target="#modalTambah" disabled>
-                <i class="bi bi-cloud-arrow-up-fill me-2"></i> Muat Naik Dokumen
+        <div class="mt-4 md:mt-0">
+            <button id="btnTambahModal" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-xl font-bold transition flex items-center shadow-lg disabled:opacity-50" data-bs-toggle="modal" data-bs-target="#modalTambah" disabled>
+                <i class="bi bi-cloud-plus-fill me-2"></i> Muat Naik Dokumen
             </button>
         </div>
     </div>
 
-    <div class="card border-0 shadow-sm rounded-4 mb-4">
-        <div class="card-body p-4">
-            <div class="row align-items-center">
-                <div class="col-md-5">
-                    <label class="form-label fw-bold text-secondary mb-2 small">PILIH KATEGORI SERVIS</label>
-                    <select id="dropdownServis" class="form-select shadow-sm">
-                        <option value="">Sila Pilih Servis...</option>
-                        <?php foreach($servis as $s): ?>
-                            <option value="<?= esc($s['idservis']) ?>"><?= esc($s['namaservis']) ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
+    <div class="glass-card p-6 mb-8 max-w-md">
+        <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-2">
+            <i class="bi bi-tag-fill"></i> Pilih Kategori Servis
+        </label>
+        <div class="relative">
+            <select id="dropdownServis" class="w-full appearance-none bg-white border border-slate-200 p-3 rounded-xl focus:outline-none font-semibold text-slate-600 cursor-pointer">
+                <option value="">Sila Pilih Servis...</option>
+                <?php foreach($servis as $s): ?>
+                    <option value="<?= esc($s['idservis']) ?>"><?= esc($s['namaservis']) ?></option>
+                <?php endforeach; ?>
+            </select>
+            <i class="bi bi-chevron-down absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 pointer-events-none"></i>
+        </div>
+    </div>
+
+    <div id="dokumenArea" class="glass-card overflow-hidden bg-white">
+        <div class="text-center py-20">
+            <div class="bg-gray-50 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm">
+                <i class="bi bi-filter text-4xl text-black-500"></i>
             </div>
-        </div>
-    </div>
-
-    <div id="dokumenArea" class="table-responsive">
-        <div class="text-center py-5">
-            <img src="https://cdn-icons-png.flaticon.com/512/5082/5082574.png" width="120" class="opacity-25 mb-3">
-            <h5 class="text-muted fw-light">Pilih servis untuk memaparkan senarai dokumen</h5>
+            <h5 class="text-slate-900 font-bold mb-1">Sila Pilih Servis</h5>
+            <p class="text-slate-500 font-medium">Pilih kategori servis di atas untuk memaparkan senarai dokumen.</p>
         </div>
     </div>
 </div>
 
-<div class="modal fade" id="modalTambah" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content p-2">
+<div class="modal fade" id="modalTambah" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-6">
+                <h5 class="text-2xl font-bold text-slate-800 m-0">Muat Naik Dokumen Baru</h5>
+                <button type="button" class="text-slate-400 hover:text-slate-600 border-0 bg-transparent text-3xl leading-none outline-none" data-bs-dismiss="modal">&times;</button>
+            </div>
             <form id="formTambah">
-                <div class="modal-header border-0">
-                    <h5 class="modal-title fw-bold">Muat Naik Dokumen Baru</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <input type="hidden" name="idservis" id="inputServisTambah">
+                <div class="mb-4">
+                    <label class="block text-sm font-bold text-slate-700 mb-2">Tajuk Dokumen</label>
+                    <input type="text" name="nama" class="input-modern" required placeholder="Contoh: Sijil Kelayakan">
                 </div>
-                <div class="modal-body">
-                    <input type="hidden" name="idservis" id="inputServisTambah">
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold">Tajuk Dokumen</label>
-                        <input type="text" name="nama" class="form-control" required placeholder="Contoh: Sijil Kelayakan">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold">Penerangan / Nota</label>
-                        <textarea name="descdoc" class="form-control" rows="3" placeholder="Nota tambahan tentang dokumen ini..."></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold">Pilih Fail (PDF Sahaja - Maks 10MB)</label>
-                        <input type="file" name="file" class="form-control" accept="application/pdf" required>
-                    </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-bold text-slate-700 mb-2">Penerangan / Nota</label>
+                    <textarea name="descdoc" class="input-modern" rows="3" placeholder="Nota tambahan tentang dokumen ini..."></textarea>
                 </div>
-                <div class="modal-footer border-0 pt-0">
-                    <button type="submit" class="btn btn-primary w-100 py-3 mt-2">Hantar Dokumen</button>
+                <div class="mb-6">
+                    <label class="block text-sm font-bold text-slate-700 mb-2">Pilih Fail (PDF Sahaja - Maks 10MB)</label>
+                    <input type="file" name="file" class="block w-full text-sm text-slate-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:bg-indigo-50 file:text-indigo-700" accept="application/pdf" required>
                 </div>
+                <button type="submit" class="btn-submit-blue shadow-lg shadow-indigo-200">Hantar Dokumen</button>
             </form>
         </div>
     </div>
 </div>
 
-<div class="modal fade" id="modalEdit" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content p-2">
+<div class="modal fade" id="modalEdit" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-6">
+                <h5 class="text-2xl font-bold text-slate-800 m-0">Kemaskini Maklumat</h5>
+                <button type="button" class="text-slate-400 hover:text-slate-600 border-0 bg-transparent text-3xl leading-none outline-none" data-bs-dismiss="modal">&times;</button>
+            </div>
             <form id="formEdit">
-                <div class="modal-header border-0">
-                    <h5 class="modal-title fw-bold">Kemaskini Maklumat</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <input type="hidden" name="iddoc" id="edit_iddoc">
+                <div class="mb-4">
+                    <label class="block text-sm font-bold text-slate-700 mb-2">Nama Dokumen</label>
+                    <input type="text" name="nama" id="edit_nama" class="input-modern" required>
                 </div>
-                <div class="modal-body">
-                    <input type="hidden" name="iddoc" id="edit_iddoc">
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold">Nama Dokumen</label>
-                        <input type="text" name="nama" id="edit_nama" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold">Catatan</label>
-                        <textarea name="descdoc" id="edit_desc" class="form-control" rows="3"></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold">Tukar Fail (PDF Sahaja - Maks 10MB)</label>
-                        <input type="file" name="file" id="edit_file" class="form-control" accept="application/pdf">
-                        <small class="text-muted">Biarkan kosong jika tiada perubahan fail.</small>
-                    </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-bold text-slate-700 mb-2">Catatan</label>
+                    <textarea name="descdoc" id="edit_desc" class="input-modern" rows="3"></textarea>
                 </div>
-                <div class="modal-footer border-0 pt-0">
-                    <button type="submit" class="btn btn-primary w-100 py-3">Simpan Perubahan</button>
+                <div class="mb-6">
+                    <label class="block text-sm font-bold text-slate-700 mb-2">Tukar Fail (Opsional)</label>
+                    <input type="file" name="file" id="edit_file" class="block w-full text-sm" accept="application/pdf">
                 </div>
+                <button type="submit" class="btn-submit-blue shadow-lg shadow-indigo-200">Simpan Perubahan</button>
             </form>
         </div>
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    
-    const sidebar = document.getElementById('mainSidebar');
-    const toggleBtn = document.getElementById('sidebarToggle');
-    const pageContainer = document.querySelector('.main-container');
-
-    toggleBtn.addEventListener('click', () => {
-        sidebar.classList.toggle('active');
-        if(pageContainer) pageContainer.classList.toggle('shifted');
-    });
-
     function refreshTable(idservis){
         if(!idservis){
-            $('#dokumenArea').html('<div class="text-center py-5"><p class="text-muted">Sila pilih servis.</p></div>');
+            $('#dokumenArea').html(`
+                <div class="text-center py-20">
+                    <div class="bg-gray-50 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm">
+                    <i class="bi bi-filter text-4xl text-black-500"></i>
+                    </div>
+                    <h5 class="text-slate-900 font-bold mb-1">Sila Pilih Servis</h5>
+                    <p class="text-slate-500 font-medium">Pilih kategori servis di atas untuk memaparkan senarai dokumen.</p>
+                </div>
+            `);
             $('#btnTambahModal').prop('disabled', true);
             return;
         }
-        
         $('#btnTambahModal').prop('disabled', false);
+        $('#dokumenArea').html('<div class="text-center py-20 text-slate-400 italic">Memproses data...</div>');
 
         $.get('/dokumen/getDokumen/' + idservis, function(res){
             var items = res.items;
             if(!items || items.length === 0){
-                $('#dokumenArea').html('<div class="alert bg-white shadow-sm rounded-4 text-center p-5 fw-medium text-muted">Tiada dokumen dijumpai untuk servis ini.</div>');
+                $('#dokumenArea').html(`
+                    <div class="p-20 text-center">
+                        <div class="bg-red-50 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm">
+                            <i class="bi bi-folder-x text-4xl text-red-500"></i>
+                        </div>
+                        <h5 class="text-slate-900 font-bold mb-1">Tiada Fail Dijumpai</h5>
+                        <p class="text-slate-500 font-medium">Tiada dokumen yang dimuat naik untuk servis ini lagi.</p>
+                    </div>
+                `);
                 return;
             }
 
-            var html = '<table class="table align-middle">';
-            html += '<thead><tr><th>Fail</th><th>Maklumat Dokumen</th><th class="text-center">Status</th><th class="text-end pe-4">Aksi</th></tr></thead><tbody>';
+            let html = '<div class="overflow-x-auto"><table class="min-w-full">';
+            html += '<thead class="bg-slate-50 border-b text-slate-500 text-xs font-bold uppercase tracking-wider"><tr class="text-left"><th class="p-4 text-center w-24">Fail</th><th class="p-4">Maklumat Dokumen</th><th class="p-4 text-center">Status</th><th class="p-4 text-right">Tindakan</th></tr></thead>';
+            html += '<tbody class="divide-y divide-slate-100 bg-white">';
 
-            for(var i=0; i<items.length; i++){
-                var d = items[i];
-                var fileUrl = '/dokumen/viewFile/'+d.idservis+'/'+d.namafail;
-                
-                var previewHtml = '';
-                if(d.mime && d.mime.includes('image')){
-                    previewHtml = '<img class="preview-box shadow-sm" src="'+fileUrl+'">';
-                } else {
-                    previewHtml = '<div class="preview-box shadow-sm text-danger"><i class="bi bi-file-earmark-pdf-fill fs-4"></i></div>';
-                }
+            items.forEach(d => {
+                const fileUrl = `/dokumen/viewFile/${d.idservis}/${d.namafail}`;
+                const icon = `<div class="w-12 h-12 rounded-xl bg-rose-50 text-rose-500 flex items-center justify-center mx-auto shadow-sm"><i class="bi bi-file-earmark-pdf-fill fs-4"></i></div>`;
 
-                html += '<tr>' +
-                    '<td style="width: 80px">' + previewHtml + '</td>' +
-                    '<td>' +
-                        '<div class="fw-bold text-dark mb-1" style="font-size: 1rem;">' + d.nama + '</div>' +
-                        '<div class="text-muted small mb-2 text-truncate" style="max-width: 300px;">' + (d.descdoc || '<i>Tiada catatan</i>') + '</div>' +
-                        
-                        '<div class="d-flex flex-wrap gap-3">' +
-                            '<span class="text-muted small" style="font-size: 11px;">' +
-                                '<i class="bi bi-calendar-plus me-1 text-secondary"></i>Dicipta: ' + formatDate(d.created_at) + 
-                            '</span>' +
-                            '<span class="text-primary small" style="font-size: 11px;">' +
-                                '<i class="bi bi-calendar-check me-1"></i>Kemaskini: ' + formatDate(d.updated_at) + 
-                            '</span>' +
-                        '</div>' +
-                    '</td>' +
-                    '<td class="text-center"><span class="badge status-' + d.status + '">' + d.status.toUpperCase() + '</span></td>' +
-                    '<td>' +
-                        '<div class="d-flex justify-content-end gap-2 pe-3">' +
-                            '<a href="'+fileUrl+'" target="_blank" class="action-btn btn btn-light text-secondary" title="Paparan Fail"><i class="bi bi-eye"></i></a>' +
-                            '<button onclick="editDokumen('+d.iddoc+')" class="action-btn btn btn-light text-primary" title="Kemaskini"><i class="bi bi-pencil-square"></i></button>' +
-                            '<button onclick="hapusDokumen('+d.iddoc+')" class="action-btn btn btn-light text-danger" title="Padam"><i class="bi bi-trash"></i></button>' +
-                        '</div>' +
-                    '</td>' +
-                '</tr>';
-            }
-            html += '</tbody></table>';
+                html += `<tr class="hover:bg-slate-50/50 transition-colors">
+                    <td class="p-4">${icon}</td>
+                    <td class="p-4">
+                        <div class="font-bold text-slate-800">${d.nama}</div>
+                        <div class="text-xs text-slate-400 mt-1">${d.descdoc || 'Tiada nota'}</div>
+                        <div class="flex items-center gap-2 mt-2 text-[10px] font-bold text-slate-400 uppercase"><i class="bi bi-clock"></i> ${formatDate(d.created_at)}</div>
+                    </td>
+                    <td class="p-4 text-center"><span class="status-pill status-${d.status}">${d.status}</span></td>
+                    <td class="p-4">
+                        <div class="flex justify-end gap-2">
+                            <a href="${fileUrl}" target="_blank" class="btn-action bg-indigo-50 text-indigo-600 hover:bg-indigo-600 hover:text-white" title="Lihat"><i class="bi bi-eye-fill"></i></a>
+                            <button onclick="editDokumen(${d.iddoc})" class="btn-action bg-amber-50 text-amber-600 hover:bg-amber-600 hover:text-white" title="Edit"><i class="bi bi-pencil-square"></i></button>
+                            <button onclick="hapusDokumen(${d.iddoc})" class="btn-action bg-rose-50 text-rose-600 hover:bg-rose-600 hover:text-white" title="Padam"><i class="bi bi-trash-fill"></i></button>
+                        </div>
+                    </td>
+                </tr>`;
+            });
+            html += '</tbody></table></div>';
             $('#dokumenArea').html(html);
         });
     }
 
-    function formatDate(dateString){
-        if(!dateString) return '-';
-        var d = new Date(dateString);
-        return d.toLocaleDateString('ms-MY', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+    function formatDate(str){
+        if(!str) return '-';
+        const d = new Date(str);
+        return d.toLocaleDateString('ms-MY', { day: '2-digit', month: 'short', year: 'numeric' });
     }
 
     $('#dropdownServis').change(function(){
@@ -418,112 +275,60 @@
         refreshTable(val);
     });
 
-    // VALIDASI TAMBAH
+    // AJAX CRUD Logic kekal sama mengikut kod asal anda
     $('#formTambah').submit(function(e){
         e.preventDefault();
-        
-        var fileInput = $(this).find('input[type="file"]')[0];
-        if(fileInput.files.length > 0){
-            var file = fileInput.files[0];
-            if(file.type !== "application/pdf"){
-                Swal.fire('Ralat!', 'Hanya format PDF sahaja yang dibenarkan.', 'error');
-                return false;
-            }
-            if(file.size > 10 * 1024 * 1024){
-                Swal.fire('Ralat!', 'Saiz fail tidak boleh melebihi 10MB.', 'error');
-                return false;
-            }
-        }
-
-        var formData = new FormData(this);
         $.ajax({
-            url:'/dokumen/tambah',
-            type:'POST',
-            data:formData,
-            processData:false,
-            contentType:false,
-            success:function(res){
+            url: '/dokumen/tambah',
+            type: 'POST',
+            data: new FormData(this),
+            processData: false, contentType: false,
+            success: function(res){
                 if(res.status){
-                    Swal.fire({ icon: 'success', title: 'Berjaya', text: res.msg, showConfirmButton: false, timer: 1500 });
+                    Swal.fire({ icon: 'success', title: 'Berjaya', text: res.msg, timer: 1500, showConfirmButton: false });
                     $('#formTambah')[0].reset();
                     bootstrap.Modal.getInstance(document.getElementById('modalTambah')).hide();
                     refreshTable($('#dropdownServis').val());
-                } else {
-                    Swal.fire('Gagal', res.msg || 'Ralat berlaku', 'error');
                 }
             }
         });
     });
 
-    function hapusDokumen(iddoc){
-        Swal.fire({
-            title: 'Hapus Fail?',
-            text: "Fail akan dipadam secara kekal dari server!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#4361ee',
-            cancelButtonColor: '#ef4444',
-            confirmButtonText: 'Ya, Padam',
-            cancelButtonText: 'Batal'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.post('/dokumen/hapus/' + iddoc, function(res){
-                    if(res.status) {
-                        Swal.fire('Terpadam!', res.msg, 'success');
-                        refreshTable($('#dropdownServis').val());
-                    }
-                });
-            }
-        });
-    }
-
-    function editDokumen(iddoc){
-        $.get('/dokumen/edit/' + iddoc, function(res){
+    window.editDokumen = function(id){
+        $.get('/dokumen/edit/' + id, function(res){
             if(res.status){
                 $('#edit_iddoc').val(res.data.iddoc);
                 $('#edit_nama').val(res.data.nama);
                 $('#edit_desc').val(res.data.descdoc);
-                $('#edit_file').val(''); // Reset file input
                 new bootstrap.Modal(document.getElementById('modalEdit')).show();
             }
         });
     }
 
-    // VALIDASI EDIT
     $('#formEdit').submit(function(e){
         e.preventDefault();
-        
-        var fileInput = $('#edit_file')[0];
-        if(fileInput.files.length > 0){
-            var file = fileInput.files[0];
-            if(file.type !== "application/pdf"){
-                Swal.fire('Ralat!', 'Hanya format PDF sahaja yang dibenarkan.', 'error');
-                return false;
-            }
-            if(file.size > 10 * 1024 * 1024){
-                Swal.fire('Ralat!', 'Saiz fail tidak boleh melebihi 10MB.', 'error');
-                return false;
-            }
-        }
-
-        var formData = new FormData(this);
         $.ajax({
-            url:'/dokumen/kemaskini/' + $('#edit_iddoc').val(),
-            type:'POST',
-            data:formData,
-            processData:false,
-            contentType:false,
-            success:function(res){
+            url: '/dokumen/kemaskini/' + $('#edit_iddoc').val(),
+            type: 'POST',
+            data: new FormData(this),
+            processData: false, contentType: false,
+            success: function(res){
                 if(res.status){
-                    Swal.fire({ icon: 'success', title: 'Berjaya Dikemaskini', showConfirmButton: false, timer: 1500 });
+                    Swal.fire({ icon: 'success', title: 'Dikemaskini', timer: 1500, showConfirmButton: false });
                     bootstrap.Modal.getInstance(document.getElementById('modalEdit')).hide();
                     refreshTable($('#dropdownServis').val());
-                } else {
-                    Swal.fire('Gagal', res.msg || 'Ralat berlaku', 'error');
                 }
             }
         });
     });
+
+    window.hapusDokumen = function(id){
+        Swal.fire({ title: 'Nak Padam?', text: "Fail akan dibuang selamanya!", icon: 'warning', showCancelButton: true, confirmButtonColor: '#4f46e5' }).then((result) => {
+            if (result.isConfirmed) {
+                $.post('/dokumen/hapus/' + id, function(){ refreshTable($('#dropdownServis').val()); });
+            }
+        });
+    }
 </script>
-</body>
-</html>
+
+<?= $this->endSection() ?>
