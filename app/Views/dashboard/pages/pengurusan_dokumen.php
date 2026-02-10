@@ -218,7 +218,7 @@
             return;
         }
         $('#btnTambahModal').prop('disabled', false);
-        $('#dokumenArea').html('<div class="text-center py-20 text-slate-400 italic">Memproses data...</div>');
+        $('#dokumenArea').html('<div class="text-center py-20 text-slate-400">Memproses data...</div>');
 
         $.get('/dokumen/getDokumen/' + idservis, function(res){
             var items = res.items;
