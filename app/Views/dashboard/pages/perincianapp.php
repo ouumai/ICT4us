@@ -67,7 +67,7 @@
     .hidden { display: none; }
 
     /* Tailwind Conflict Fixes */
-    .text-slate-500 { color: #64748b; }
+.text-slate-500 { color: #64748b; }
 </style>
 
 <div class="container-fluid py-4">
