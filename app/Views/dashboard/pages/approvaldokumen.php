@@ -60,7 +60,7 @@
 
     <div class="grid grid-cols-1 md:grid-cols-12 gap-4 mb-6">
         
-        <div class="md:col-span-3 relative">
+        <div class="md:col-span-4 relative">
             
             <select id="filterStatus" class="w-full appearance-none bg-white border border-slate-200 p-3 rounded-xl focus:outline-none transition font-semibold text-slate-600 cursor-pointer">
                 <option value="all">Semua Status</option>
@@ -72,7 +72,7 @@
             <i class="bi bi-chevron-down absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 pointer-events-none"></i>
         </div>
 
-        <div class="md:col-span-6 relative">
+        <div class="md:col-span-8 relative">
             <i class="bi bi-search absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400 z-10"></i>
             
             <input type="text" id="searchDokumen" placeholder="Cari tajuk dokumen..." 
