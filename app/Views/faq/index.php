@@ -163,7 +163,7 @@
         <div class="md:col-span-8">
             <div id="searchContainer" class="glass-card p-6 h-full hidden">
                 <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-2">
-                    <i class="bi bi-search"></i> Cari Soalan / Jawapan
+                    <i class="bi bi-question-lg"></i> Cari Soalan / Jawapan
                 </label>
                 <div class="relative">
                     <i class="bi bi-search absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400 z-10"></i>
