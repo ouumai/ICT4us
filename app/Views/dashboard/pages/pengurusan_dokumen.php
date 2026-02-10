@@ -8,6 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <style>
     /* 1. Global Font Setup */
@@ -29,68 +30,52 @@
         border-radius: 1.5rem;
     }
 
-    /* 4. MODAL FULL SCREEN BLUR (Tutup Sidebar, Header & Footer) */
-    .modal-backdrop { display: none !important; }
-    .modal {
-        position: fixed !important;
-        top: 0 !important;
-        left: 0 !important;
-        width: 100vw !important;
-        height: 100vh !important;
-        z-index: 100000 !important; 
-        background: rgba(15, 23, 42, 0.5) !important; 
-        backdrop-filter: blur(10px) !important;
-        -webkit-backdrop-filter: blur(10px) !important;
-        display: none; 
-        overflow-x: hidden;
-        overflow-y: auto;
-    }
-
-    .modal-dialog {
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        min-height: 100vh !important;
-        margin: 0 auto !important;
-        max-width: 500px !important;
-        pointer-events: none;
-    }
-
-    .modal-content {
-        pointer-events: auto;
-        border: none !important;
-        border-radius: 2rem !important;
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important;
-        padding: 2.5rem !important;
-        background: white !important;
+    /* 4. SweetAlert Custom Styling */
+    .swal2-actions {
         width: 100% !important;
+        display: flex !important;
+        flex-direction: row !important; 
+        gap: 12px !important;
+        margin-top: 1.5rem !important;
+        padding: 0 1rem !important;
     }
 
-    /* 5. Input & Button Styles */
-    .input-modern {
-        width: 100%;
-        padding: 0.85rem 1rem;
-        border-radius: 0.85rem;
-        border: 1px solid #e2e8f0;
-        outline: none;
-        transition: all 0.2s;
-        font-size: 0.95rem;
-    }
-    .input-modern:focus { border-color: #4f46e5; box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1); }
-
-    .btn-submit-blue {
-        background-color: #4f46e5;
-        color: white;
-        width: 100%;
-        padding: 14px;
-        border-radius: 12px;
-        font-weight: 700;
-        border: none;
-        margin-top: 1.5rem;
-        box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
+    .btn-swal-hantar {
+        flex: 1 !important;
+        background: #3b82f6 !important; 
+        color: white !important; 
+        font-weight: 700 !important;
+        padding: 14px !important; 
+        border-radius: 16px !important;
+        border: none !important; 
+        font-size: 0.95rem !important;
+        order: 2;
     }
 
-    /* 6. Status UI & Action Buttons */
+    .btn-swal-padam {
+        flex: 1 !important;
+        background: #fee2e2 !important; 
+        color: #ef4444 !important; 
+        font-weight: 700 !important;
+        padding: 14px !important; 
+        border-radius: 16px !important;
+        border: none !important;
+        font-size: 0.95rem !important;
+        order: 1;
+    }
+
+    /* Kursor not-allowed untuk butang muat naik */
+    #btnTambahModal:disabled {
+        cursor: not-allowed !important;
+        pointer-events: auto !important;
+        opacity: 0.6;
+    }
+
+    .swal2-popup { border-radius: 28px !important; padding: 2rem !important; }
+    .swal-label-custom { display: block; font-size: 0.8rem; font-weight: 700; color: #1e293b; margin-bottom: 8px; text-align: left; }
+    .swal-input-custom { height: 52px; border-radius: 12px; border: 1px solid #e2e8f0; padding: 0 15px; width: 100%; background-color: #ffffff; font-weight: 500; font-size: 0.95rem; }
+
+    /* 5. Status UI & Action Buttons */
     .status-pill { padding: 4px 12px; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; display: inline-block; }
     .status-pending { background-color: #fef3c7; color: #92400e; }
     .status-approved { background-color: #dcfce7; color: #166534; }
@@ -114,7 +99,7 @@
             </div>
         </div>
         <div class="mt-4 md:mt-0">
-            <button id="btnTambahModal" class="bg-blue-500 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-bold transition flex items-center shadow-lg disabled:opacity-50" data-bs-toggle="modal" data-bs-target="#modalTambah" disabled>
+            <button id="btnTambahModal" onclick="openDokumenEditor()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3.5 rounded-xl font-bold transition flex items-center shadow-lg disabled:opacity-50" disabled>
                 <i class="bi bi-cloud-plus-fill me-2"></i> Muat Naik Dokumen
             </button>
         </div>
@@ -142,62 +127,6 @@
             </div>
             <h5 class="text-slate-900 font-bold mb-1">Sila Pilih Servis</h5>
             <p class="text-slate-500 font-medium">Pilih kategori servis di atas untuk memaparkan senarai dokumen.</p>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="modalTambah" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="flex justify-between items-center mb-6">
-                <h5 class="text-2xl font-bold text-slate-800 m-0">Muat Naik Dokumen Baru</h5>
-                <button type="button" class="text-slate-400 hover:text-slate-600 border-0 bg-transparent text-3xl leading-none outline-none" data-bs-dismiss="modal">&times;</button>
-            </div>
-            <form id="formTambah">
-                <input type="hidden" name="idservis" id="inputServisTambah">
-                <div class="mb-4">
-                    <label class="block text-sm font-bold text-slate-700 mb-2">Tajuk Dokumen</label>
-                    <input type="text" name="nama" class="input-modern" required placeholder="Contoh: Sijil Kelayakan">
-                </div>
-                <div class="mb-4">
-                    <label class="block text-sm font-bold text-slate-700 mb-2">Penerangan / Nota</label>
-                    <textarea name="descdoc" class="input-modern" rows="3" placeholder="Nota tambahan tentang dokumen ini..."></textarea>
-                </div>
-                <div class="mb-6">
-                    <label class="block text-sm font-bold text-slate-700 mb-2">Pilih Fail (PDF Sahaja - Maks 10MB)</label>
-                    <input type="file" name="file" class="block w-full text-sm text-slate-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:bg-indigo-50 file:text-indigo-700" accept="application/pdf" required>
-                </div>
-                <button type="submit" class="w-full bg-blue-500 hover:bg-blue-700 text-white py-3 rounded-xl font-bold transition shadow-lg shadow-blue-500/30">
-                    Hantar Dokumen
-                </button>
-            </form>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="modalEdit" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="flex justify-between items-center mb-6">
-                <h5 class="text-2xl font-bold text-slate-800 m-0">Kemaskini Maklumat</h5>
-                <button type="button" class="text-slate-400 hover:text-slate-600 border-0 bg-transparent text-3xl leading-none outline-none" data-bs-dismiss="modal">&times;</button>
-            </div>
-            <form id="formEdit">
-                <input type="hidden" name="iddoc" id="edit_iddoc">
-                <div class="mb-4">
-                    <label class="block text-sm font-bold text-slate-700 mb-2">Nama Dokumen</label>
-                    <input type="text" name="nama" id="edit_nama" class="input-modern" required>
-                </div>
-                <div class="mb-4">
-                    <label class="block text-sm font-bold text-slate-700 mb-2">Catatan</label>
-                    <textarea name="descdoc" id="edit_desc" class="input-modern" rows="3"></textarea>
-                </div>
-                <div class="mb-6">
-                    <label class="block text-sm font-bold text-slate-700 mb-2">Tukar Fail (Opsional)</label>
-                    <input type="file" name="file" id="edit_file" class="block w-full text-sm" accept="application/pdf">
-                </div>
-                <button type="submit" class="btn-submit-blue shadow-lg shadow-indigo-200">Simpan Perubahan</button>
-            </form>
         </div>
     </div>
 </div>
@@ -254,7 +183,7 @@
                     <td class="p-4">
                         <div class="flex justify-end gap-2">
                             <a href="${fileUrl}" target="_blank" class="btn-action bg-indigo-50 text-indigo-600 hover:bg-indigo-600 hover:text-white" title="Lihat"><i class="bi bi-eye-fill"></i></a>
-                            <button onclick="editDokumen(${d.iddoc})" class="btn-action bg-amber-50 text-amber-600 hover:bg-amber-600 hover:text-white" title="Edit"><i class="bi bi-pencil-square"></i></button>
+                            <button onclick="openDokumenEditor(${d.iddoc})" class="btn-action bg-amber-50 text-amber-600 hover:bg-amber-600 hover:text-white" title="Edit"><i class="bi bi-pencil-square"></i></button>
                             <button onclick="hapusDokumen(${d.iddoc})" class="btn-action bg-rose-50 text-rose-600 hover:bg-rose-600 hover:text-white" title="Padam"><i class="bi bi-trash-fill"></i></button>
                         </div>
                     </td>
@@ -272,62 +201,107 @@
     }
 
     $('#dropdownServis').change(function(){
-        var val = $(this).val();
-        $('#inputServisTambah').val(val);
-        refreshTable(val);
+        refreshTable($(this).val());
     });
 
-    // AJAX CRUD Logic kekal sama mengikut kod asal anda
-    $('#formTambah').submit(function(e){
-        e.preventDefault();
-        $.ajax({
-            url: '/dokumen/tambah',
-            type: 'POST',
-            data: new FormData(this),
-            processData: false, contentType: false,
-            success: function(res){
-                if(res.status){
-                    Swal.fire({ icon: 'success', title: 'Berjaya', text: res.msg, timer: 1500, showConfirmButton: false });
-                    $('#formTambah')[0].reset();
-                    bootstrap.Modal.getInstance(document.getElementById('modalTambah')).hide();
-                    refreshTable($('#dropdownServis').val());
-                }
+    // --- SweetAlert Editor Logic ---
+    function openDokumenEditor(iddoc = null) {
+        const idservis = $('#dropdownServis').val();
+        if (iddoc) {
+            $.get('/dokumen/edit/' + iddoc, function(res) {
+                if (res.status) showSwalEditor(res.data, idservis);
+            });
+        } else {
+            showSwalEditor(null, idservis);
+        }
+    }
+
+    function showSwalEditor(data = null, idservis) {
+        Swal.fire({
+            title: data ? 'Kemaskini Dokumen' : 'Muat Naik Dokumen',
+            showCloseButton: true,
+            html: `
+                <div class="text-left space-y-4 p-2 mt-4">
+                    <div>
+                        <label class="swal-label-custom">Nama Dokumen</label>
+                        <input id="swal-nama" class="swal-input-custom" value="${data ? data.nama : ''}" placeholder="Contoh: Sijil Kelayakan">
+                    </div>
+                    <div>
+                        <label class="swal-label-custom">Penerangan / Nota</label>
+                        <textarea id="swal-descdoc" class="swal-input-custom" style="height: 100px; padding: 10px; resize: none;">${data ? (data.descdoc || '') : ''}</textarea>
+                    </div>
+                    <div>
+                        <label class="swal-label-custom">Pilih Fail (PDF Sahaja)</label>
+                        <input type="file" id="swal-file" class="block w-full text-sm text-slate-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:bg-indigo-50 file:text-indigo-700" accept="application/pdf">
+                        ${data ? '<p class="text-[11px] text-amber-600 mt-2 font-bold italic">* Biarkan kosong jika tidak mahu tukar fail</p>' : ''}
+                    </div>
+                </div>
+            `,
+            width: '550px',
+            showConfirmButton: true,
+            confirmButtonText: 'Hantar Dokumen',
+            buttonsStyling: false,
+            customClass: {
+                confirmButton: 'btn-swal-hantar',
+                closeButton: 'swal2-close'
+            },
+            backdrop: `rgba(15, 23, 42, 0.5) blur(8px)`,
+            preConfirm: () => {
+                const nama = document.getElementById('swal-nama').value;
+                const fileInput = document.getElementById('swal-file');
+                
+                if (!nama) { Swal.showValidationMessage('Nama dokumen wajib diisi!'); return false; }
+                if (!data && fileInput.files.length === 0) { Swal.showValidationMessage('Sila pilih fail PDF!'); return false; }
+
+                const fd = new FormData();
+                fd.append('idservis', idservis);
+                fd.append('nama', nama);
+                fd.append('descdoc', document.getElementById('swal-descdoc').value);
+                if (fileInput.files[0]) fd.append('file', fileInput.files[0]);
+                
+                return fd;
             }
-        });
-    });
-
-    window.editDokumen = function(id){
-        $.get('/dokumen/edit/' + id, function(res){
-            if(res.status){
-                $('#edit_iddoc').val(res.data.iddoc);
-                $('#edit_nama').val(res.data.nama);
-                $('#edit_desc').val(res.data.descdoc);
-                new bootstrap.Modal(document.getElementById('modalEdit')).show();
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const url = data ? '/dokumen/kemaskini/' + data.iddoc : '/dokumen/tambah';
+                saveDokumen(url, result.value);
             }
         });
     }
 
-    $('#formEdit').submit(function(e){
-        e.preventDefault();
+    async function saveDokumen(url, formData) {
         $.ajax({
-            url: '/dokumen/kemaskini/' + $('#edit_iddoc').val(),
-            type: 'POST',
-            data: new FormData(this),
-            processData: false, contentType: false,
-            success: function(res){
-                if(res.status){
-                    Swal.fire({ icon: 'success', title: 'Dikemaskini', timer: 1500, showConfirmButton: false });
-                    bootstrap.Modal.getInstance(document.getElementById('modalEdit')).hide();
+            url: url, type: 'POST', data: formData, processData: false, contentType: false,
+            success: function(res) {
+                if (res.status) {
+                    Swal.fire({ icon: 'success', title: 'Berjaya', text: 'Data telah disimpan!', timer: 1500, showConfirmButton: false });
                     refreshTable($('#dropdownServis').val());
+                } else {
+                    Swal.fire('Ralat', res.msg || 'Gagal menyimpan fail', 'error');
                 }
             }
         });
-    });
+    }
 
     window.hapusDokumen = function(id){
-        Swal.fire({ title: 'Nak Padam?', text: "Fail akan dibuang selamanya!", icon: 'warning', showCancelButton: true, confirmButtonColor: '#4f46e5' }).then((result) => {
+        Swal.fire({ 
+            title: 'Padam Dokumen?', 
+            text: "Fail ini akan dibuang secara kekal!", 
+            icon: 'warning', 
+            showCancelButton: true, 
+            confirmButtonText: 'Ya, Padam',
+            cancelButtonText: 'Batal',
+            buttonsStyling: false,
+            customClass: {
+                confirmButton: 'btn-swal-padam',
+                cancelButton: 'btn-swal-hantar'
+            }
+        }).then((result) => {
             if (result.isConfirmed) {
-                $.post('/dokumen/hapus/' + id, function(){ refreshTable($('#dropdownServis').val()); });
+                $.post('/dokumen/hapus/' + id, function(){ 
+                    Swal.fire('Dipadam!', 'Dokumen telah dibuang.', 'success');
+                    refreshTable($('#dropdownServis').val()); 
+                });
             }
         });
     }
