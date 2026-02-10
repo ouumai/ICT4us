@@ -51,6 +51,9 @@
 
     <div class="glass-card rounded-3xl p-8 mb-8 flex flex-col md:flex-row items-center justify-between">
         <div class="flex items-center gap-6">
+             <div class="bg-indigo-100 p-3 rounded-2xl">
+                <i class="bi bi-check-circle text-3xl text-indigo-600"></i>
+            </div>
             <div>
                 <h1 class="text-3xl font-extrabold text-slate-900 mb-1">Pengesahan Dokumen</h1>
                 <p class="text-slate-500 font-medium italic mb-0">Jalan Kerja Dokumen Servis</p>
