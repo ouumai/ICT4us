@@ -13,12 +13,12 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <style>
-    /* 1. Global Font Setup */
+    /* 1. Global Font */
     body, .content-wrapper, .main-sidebar, h1, h2, h3, h4, h5, h6, p, span, div, table, input, textarea, button {
         font-family: 'Plus Jakarta Sans', sans-serif !important;
     }
 
-    /* 2. Hide Default Dashboard Header */
+    /* 2. Hide Dashboard Header */
     .content-wrapper > .container-fluid > .d-md-flex.align-items-center.justify-content-between.mb-5 {
         display: none !important;
     }
@@ -52,13 +52,13 @@
 
     /* 5. Reset Button Style */
     .btn-reset {
-        color: #64748b;
+        color: #dc2626;
         font-weight: 700;
         padding: 12px 20px;
         border-radius: 12px;
         transition: 0.2s;
     }
-    .btn-reset:hover { background: #FEEBE7; color: #1e293b; }
+    .btn-reset:hover { background: #FEEBE7; color: #dc2626; }
 
     /* CKEditor Customization */
     .ck-editor__main>.ck-editor__editable { min-height: 250px; border-radius: 0 0 12px 12px !important; padding: 10px 20px !important; }
@@ -118,7 +118,7 @@
 
                 <div>
                     <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Nama Servis Rasmi (Max 145 Aksara)</label>
-                    <input type="text" id="namaservis" name="namaservis" class="input-modern" maxlength="145" required>
+                    <input type="text" id="namaservis" name="namaservis" class="input-modern" maxlength="145">
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -138,7 +138,7 @@
                 </div>
 
                 <div class="flex justify-end items-center gap-4 pt-6 border-t border-slate-100">
-                    <button type="button" id="btnReset" class="btn-reset text-red">Reset</button>
+                    <button type="button" id="btnReset" class="btn-reset">Reset</button>
                     <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white px-8 py-3 rounded-xl font-bold transition shadow-lg shadow-blue-500/30">
                         <i class="bi bi-check2-circle me-2"></i> Simpan Perubahan
                     </button>
@@ -153,14 +153,14 @@ $(document).ready(function() {
     let editor;
     let originalData = {};
 
-    // Initialize CKEditor
+    // 1. Initialize CKEditor
     ClassicEditor.create(document.querySelector('#description'), {
         toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'undo', 'redo']
     }).then(newEditor => {
         editor = newEditor;
     }).catch(error => console.error(error));
 
-    // Handle Dropdown Change
+    // 2. Dropdown Change Handler
     $('#dropdownServis').change(function() {
         const id = $(this).val();
         const selectedOption = $(this).find('option:selected');
@@ -170,6 +170,12 @@ $(document).ready(function() {
             $('#emptyState').removeClass('hidden');
             return;
         }
+
+        // CLEAR VIEW LAMA SERTA-MERTA (Sapu bersih aktiviti lama)
+        $('#namaservis').val('');
+        $('#infourl').val('');
+        $('#mohonurl').val('');
+        if (editor) editor.setData(''); 
 
         $('#emptyState').addClass('hidden');
         $('#formArea').removeClass('hidden');
@@ -183,7 +189,8 @@ $(document).ready(function() {
         $('#infourl').val(info);
         $('#mohonurl').val(mohon);
 
-        editor.setData('<p><i>Memuatkan data...</i></p>');
+        // Fetch data terbaru dari DB melalui AJAX
+        editor.setData('<p><i>Memuatkan data terbaru...</i></p>');
         $.get(`<?= base_url('perincianmodul/getServis') ?>/${id}`, function(res) {
             const descContent = (res.desc && res.desc.description) ? res.desc.description : '';
             editor.setData(descContent);
@@ -197,29 +204,55 @@ $(document).ready(function() {
         });
     });
 
-    // Reset Logic
-    $('#btnReset').click(function() {
-        if (!originalData.name) return;
+    // 3. Validation Logic (Elak simpan kosong)
+    $('#servisForm').on('submit', function(e) {
+        const nameVal = $('#namaservis').val().trim();
+        const descVal = editor.getData().trim();
+
+        if (nameVal === "" || descVal === "" || descVal === "<p>&nbsp;</p>") {
+            e.preventDefault();
+            Swal.fire({
+                icon: 'warning',
+                title: 'Borang Tidak Lengkap',
+                text: 'Sila isi borang.',
+                confirmButtonColor: '#3b82f6'
+            });
+            return false;
+        }
+    });
+
+    // 4. Success Handling - AUTO REFRESH PAGE
+    <?php if(session()->getFlashdata('success')): ?>
+        Swal.fire({ 
+            icon: 'success', 
+            title: 'Berjaya!', 
+            text: '<?= session()->getFlashdata('success') ?>', 
+            confirmButtonColor: '#3b82f6',
+            timer: 2000
+        }).then(() => {
+            // Ini akan paksa page refresh untuk buang segala cache data lama
+            window.location.reload(); 
+        });
+    <?php endif; ?>
+
+    // 5. Reset Button Logic (Kosongkan Description Sahaja)
+        $('#btnReset').click(function() {
         Swal.fire({
             title: 'Reset Semula?',
-            text: "Data akan dikembalikan kepada maklumat asal.",
-            icon: 'question',
+            text: "Data akan dikosongkan.",
+            icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#3b82f6'
+            confirmButtonColor: '#dc2626',
+            cancelButtonColor: '#94a3b8',
+            confirmButtonText: 'Ya, Padam'
         }).then((result) => {
             if (result.isConfirmed) {
-                $('#namaservis').val(originalData.name);
-                $('#infourl').val(originalData.info);
-                $('#mohonurl').val(originalData.mohon);
-                editor.setData(originalData.desc);
+                if (editor) {
+                    editor.setData(''); 
+                }
             }
         });
     });
-
-    // Alert Handling
-    <?php if(session()->getFlashdata('success')): ?>
-        Swal.fire({ icon: 'success', title: 'Berjaya!', text: '<?= session()->getFlashdata('success') ?>', confirmButtonColor: '#3b82f6' });
-    <?php endif; ?>
 });
 </script>
 
