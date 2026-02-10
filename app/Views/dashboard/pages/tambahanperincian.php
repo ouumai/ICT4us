@@ -98,6 +98,10 @@
     .swal-input-custom { height: 52px; border-radius: 12px; border: 1px solid #e2e8f0; padding: 0 15px; width: 100%; background-color: #ffffff; font-weight: 500; font-size: 0.95rem; }
     .ck-editor__main>.ck-editor__editable { min-height: 200px !important; border-radius: 0 0 12px 12px !important; }
     .ck.ck-editor__top { border-radius: 12px 12px 0 0 !important; }
+
+    /* Tailwind Conflict Fixes */
+    .text-slate-500 { color: #64748b; }
+
 </style>
 
 <div class="container-fluid py-4">
@@ -106,7 +110,7 @@
             <div class="bg-indigo-50 p-3 rounded-2xl"><i class="bi bi-folder-plus text-3xl text-indigo-600"></i></div>
             <div>
                 <h1 class="text-3xl font-extrabold text-slate-900 mb-1">Tambahan Perincian Modul</h1>
-                <p class="text-slate-500 font-medium italic mb-0">Urus pautan maklumat dan perincian servis tambahan</p>
+                <p class="text-slate-500 font-medium mb-0">Urus pautan maklumat dan perincian servis tambahan</p>
             </div>
         </div>
         <button onclick="openEditor()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3.5 rounded-xl font-bold flex items-center gap-2 shadow-lg transition-all">

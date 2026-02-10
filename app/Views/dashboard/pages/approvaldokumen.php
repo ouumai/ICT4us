@@ -56,7 +56,7 @@
             </div>
             <div>
                 <h1 class="text-3xl font-extrabold text-slate-900 mb-1">Pengesahan Dokumen</h1>
-                <p class="text-slate-500 font-medium italic mb-0">Jalan Kerja Dokumen Servis</p>
+                <p class="text-slate-500 font-medium mb-0">Jalan Kerja Dokumen Servis</p>
             </div>
         </div>
     </div>

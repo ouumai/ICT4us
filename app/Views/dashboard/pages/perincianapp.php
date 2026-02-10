@@ -65,6 +65,9 @@
     .ck.ck-editor__top { border-radius: 12px 12px 0 0 !important; border-bottom: none !important; }
     
     .hidden { display: none; }
+
+    /* Tailwind Conflict Fixes */
+    .text-slate-500 { color: #64748b; }
 </style>
 
 <div class="container-fluid py-4">
@@ -75,7 +78,7 @@
             </div>
             <div>
                 <h1 class="text-3xl font-extrabold text-slate-900 mb-1">Sistem Perincian Modul</h1>
-                <p class="text-slate-500 font-medium italic mb-0">Kemaskini maklumat dan penerangan servis rasmi</p>
+                <p class="text-slate-500 font-medium mb-0">Kemaskini maklumat dan penerangan servis rasmi</p>
             </div>
         </div>
     </div>

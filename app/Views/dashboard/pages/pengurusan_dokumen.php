@@ -71,6 +71,9 @@
         opacity: 0.6;
     }
 
+    /* Tailwind Conflict Fixes */
+    .text-slate-500 { color: #64748b; }
+
     .swal2-popup { border-radius: 28px !important; padding: 2rem !important; }
     .swal-label-custom { display: block; font-size: 0.8rem; font-weight: 700; color: #1e293b; margin-bottom: 8px; text-align: left; }
     .swal-input-custom { height: 52px; border-radius: 12px; border: 1px solid #e2e8f0; padding: 0 15px; width: 100%; background-color: #ffffff; font-weight: 500; font-size: 0.95rem; }
@@ -95,7 +98,7 @@
             </div>
             <div>
                 <h1 class="text-3xl font-extrabold text-slate-900 mb-1">Pengurusan Dokumen Modul</h1>
-                <p class="text-slate-500 font-medium italic mb-0">Kemaskini dan urus fail mengikut servis</p>
+                <p class="text-slate-500 font-medium mb-0">Kemaskini dan urus fail mengikut servis</p>
             </div>
         </div>
         <div class="mt-4 md:mt-0">
