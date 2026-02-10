@@ -13,7 +13,7 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <style>
-    /* Global Setup */
+    /* 1. Global Setup */
     body, .content-wrapper, .main-sidebar, h1, h2, h3, h4, h5, h6, p, span, div, table, input, textarea, button {
         font-family: 'Plus Jakarta Sans', sans-serif !important;
     }
@@ -22,7 +22,7 @@
         display: none !important;
     }
 
-    /* Glassmorphism Card */
+    /* 2. Card Styling */
     .glass-card {
         background: rgba(255, 255, 255, 0.95);
         backdrop-filter: blur(10px);
@@ -31,60 +31,79 @@
         border-radius: 1.5rem;
     }
 
-    /* REPAIR: Saiz Input & Filter (Ikut Gambar Rujukan) */
+    /* 3. Modern Input Size (Search & Filter) */
     .modern-input-size {
-        height: 56px !important; /* Saiz besar & mantap */
+        height: 56px !important;
         border-radius: 14px !important;
         font-size: 0.95rem !important;
         font-weight: 600 !important;
         border: 1px solid #e2e8f0 !important;
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03) !important;
+        background-color: #ffffff !important;
     }
 
-    .input-with-icon {
-        padding-left: 3.5rem !important; /* Elak teks langgar ikon kanta */
-    }
-
-    /* Posisikan ikon betul-betul kat tengah input yang tinggi */
+    .input-with-icon { padding-left: 3.5rem !important; }
     .icon-search-fix {
-        position: absolute;
-        left: 1.3rem;
-        top: 50%;
-        transform: translateY(-50%);
-        color: #94a3b8;
-        font-size: 1.2rem;
-        z-index: 10;
+        position: absolute; left: 1.3rem; top: 50%; transform: translateY(-50%);
+        color: #94a3b8; font-size: 1.2rem; z-index: 10;
     }
 
-    /* Button Action Table */
-    .btn-action-table {
-        width: 140px;
-        height: 38px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        font-size: 10px !important;
-        font-weight: 800 !important;
-        border-radius: 10px;
-        text-transform: uppercase;
-        transition: all 0.2s;
+    /* 4. Table Action Buttons (Uniform Large Size) */
+    .btn-action-table-large {
+        width: 160px; height: 44px; display: inline-flex; align-items: center; justify-content: center;
+        gap: 10px; font-size: 11px !important; font-weight: 800 !important; border-radius: 12px;
+        text-transform: uppercase; transition: all 0.2s; border: 1px solid transparent;
     }
-    .btn-view { background: #F1F5F9; color: #64748B; border: 1px solid #E2E8F0; }
+    .btn-view { background: #F1F5F9; color: #64748B; border-color: #E2E8F0; }
     .btn-view:not(:disabled):hover { background: #E2E8F0; color: #1E293B; }
-    
-    .btn-edit { background: #EEF2FF; color: #4F46E5; border: 1px solid #E0E7FF; }
+    .btn-edit { background: #EEF2FF; color: #4F46E5; border-color: #E0E7FF; }
     .btn-edit:hover { background: #4F46E5; color: white; }
 
-    .ck-editor__main>.ck-editor__editable { min-height: 200px !important; max-height: 300px !important; }
+    /* 5. SweetAlert Button Styling (Padam | Hantar) */
+    .swal2-actions {
+        width: 100% !important;
+        display: flex !important;
+        flex-direction: row !important; 
+        gap: 12px !important;
+        margin-top: 1.5rem !important;
+        padding: 0 1rem !important;
+    }
+
+    .btn-swal-hantar {
+        flex: 1 !important;
+        background: #3b82f6 !important; 
+        color: white !important; 
+        font-weight: 700 !important;
+        padding: 14px !important; 
+        border-radius: 16px !important;
+        border: none !important; 
+        font-size: 0.95rem !important;
+        order: 2;
+    }
+
+    .btn-swal-padam {
+        flex: 1 !important;
+        background: #fee2e2 !important; 
+        color: #ef4444 !important; 
+        font-weight: 700 !important;
+        padding: 14px !important; 
+        border-radius: 16px !important;
+        border: none !important;
+        font-size: 0.95rem !important;
+        order: 1;
+    }
+
+    .swal2-popup { border-radius: 28px !important; padding: 2rem !important; }
+    .swal2-close { outline: none !important; box-shadow: none !important; }
+    .swal-label-custom { display: block; font-size: 0.8rem; font-weight: 700; color: #1e293b; margin-bottom: 8px; }
+    .swal-input-custom { height: 52px; border-radius: 12px; border: 1px solid #e2e8f0; padding: 0 15px; width: 100%; background-color: #ffffff; font-weight: 500; font-size: 0.95rem; }
+    .ck-editor__main>.ck-editor__editable { min-height: 200px !important; border-radius: 0 0 12px 12px !important; }
+    .ck.ck-editor__top { border-radius: 12px 12px 0 0 !important; }
 </style>
 
 <div class="container-fluid py-4">
     <div class="glass-card p-8 mb-8 flex flex-col md:flex-row items-center justify-between">
         <div class="flex items-center gap-4">
-            <div class="bg-indigo-50 p-3 rounded-2xl">
-                <i class="bi bi-folder-plus text-3xl text-indigo-600"></i>
-            </div>
+            <div class="bg-indigo-50 p-3 rounded-2xl"><i class="bi bi-folder-plus text-3xl text-indigo-600"></i></div>
             <div>
                 <h1 class="text-3xl font-extrabold text-slate-900 mb-1">Tambahan Perincian Modul</h1>
                 <p class="text-slate-500 font-medium italic mb-0">Urus pautan maklumat dan perincian servis tambahan</p>
@@ -96,21 +115,16 @@
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-12 gap-4 mb-8">
-        
         <div class="md:col-span-3 relative">
-            <select id="sortOrder" onchange="sortData()" 
-                    class="modern-input-size w-full appearance-none bg-white px-4 focus:outline-none transition text-slate-700 cursor-pointer">
-                <option value="asc">Terdahulu (ID)</option>
+            <select id="sortOrder" onchange="sortData()" class="modern-input-size w-full appearance-none px-4 focus:outline-none transition text-slate-700 cursor-pointer">
+                <option value="asc">Terlama (ID)</option>
                 <option value="desc">Terbaru (ID)</option>
             </select>
             <i class="bi bi-chevron-down absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 pointer-events-none"></i>
         </div>
-
         <div class="md:col-span-9 relative">
             <i class="bi bi-search icon-search-fix"></i>
-            <input type="text" id="searchInput" onkeyup="filterTable()" 
-                   placeholder="Cari nama servis..." 
-                   class="modern-input-size input-with-icon w-full bg-white focus:outline-none transition focus:ring-4 focus:ring-indigo-50 focus:border-indigo-300">
+            <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Cari nama servis..." class="modern-input-size input-with-icon w-full focus:outline-none transition focus:ring-4 focus:ring-indigo-50">
         </div>
     </div>
 
@@ -138,17 +152,13 @@ async function fetchServis(){
     try {
         const res = await fetch('<?= base_url("dashboard/TambahanPerincian/getAll") ?>');
         const json = await res.json();
-        if(json.status) { 
-            allServis = json.data; 
-            sortData(); 
-        }
-    } catch (e) { console.error("Error fetching data:", e); }
+        if(json.status) { allServis = json.data; sortData(); }
+    } catch (e) { console.error("Error:", e); }
 }
 
 function renderTable(){
     const body = document.getElementById('serviceTableBody');
     body.innerHTML = '';
-    
     allServis.forEach(s => {
         const hasLinks = (s.infourl && s.infourl.trim() !== "") || (s.mohonurl && s.mohonurl.trim() !== "");
         const tr = document.createElement('tr');
@@ -159,17 +169,13 @@ function renderTable(){
                 <div class="text-[10px] text-slate-400 mt-1">ID: #${s.idservis}</div>
             </td>
             <td class="px-8 py-6 text-center">
-                <button onclick="showLinks('${s.idservis}')" 
-                        class="btn-action-table btn-view ${!hasLinks ? 'opacity-50' : ''}"
-                        ${!hasLinks ? 'disabled' : ''}>
-                    <i class="bi bi-link-45deg text-lg"></i>
-                    ${hasLinks ? 'Lihat Pautan' : 'Tiada Pautan'}
+                <button onclick="showLinks('${s.idservis}')" class="btn-action-table-large btn-view ${!hasLinks ? 'opacity-50' : ''}" ${!hasLinks ? 'disabled' : ''}>
+                    <i class="bi bi-link-45deg text-lg"></i> ${hasLinks ? 'Lihat Pautan' : 'Tiada Pautan'}
                 </button>
             </td>
             <td class="px-8 py-6 text-right">
-                <button onclick="openEditor('${s.idservis}')" class="btn-action-table btn-edit">
-                    <i class="bi bi-pencil-square"></i>
-                    Kemaskini
+                <button onclick="openEditor('${s.idservis}')" class="btn-action-table-large btn-edit">
+                    <i class="bi bi-pencil-square text-lg"></i> KEMASKINI
                 </button>
             </td>
         `;
@@ -177,64 +183,47 @@ function renderTable(){
     });
 }
 
+// 3. Pop-up Editor (Dynamic Title & Side-by-Side Buttons)
 function openEditor(id = null) {
     let s = id ? allServis.find(item => String(item.idservis) === String(id)) : null;
 
     Swal.fire({
-        title: `<span class="text-2xl font-black text-slate-800">${id ? 'Kemaskini Perincian' : 'Tambah Perincian Baru'}</span>`,
+        title: id ? 'Kemaskini Perincian' : 'Tambah Perincian', // Tajuk Dinamik
+        showCloseButton: true,
         html: `
-            <div class="text-left space-y-4 p-2">
+            <div class="text-left space-y-4 p-2 mt-4">
                 <div>
-                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Nama Servis Rasmi</label>
-                    <input id="swal-namaservis" class="input-screenshot w-full" style="height:45px; border-radius:10px; border:1px solid #e2e8f0; padding:0 15px;" value="${s ? s.namaservis : ''}" placeholder="Masukkan nama servis">
+                    <label class="swal-label-custom">Nama Servis</label>
+                    <input id="swal-namaservis" class="swal-input-custom" value="${s ? s.namaservis : ''}" placeholder="Contoh: Permohonan IP">
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">URL Informasi</label>
-                        <input id="swal-infourl" class="w-full" style="height:45px; border-radius:10px; border:1px solid #e2e8f0; padding:0 15px;" value="${s ? (s.infourl || '') : ''}" placeholder="https://...">
-                    </div>
-                    <div>
-                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">URL Permohonan</label>
-                        <input id="swal-mohonurl" class="w-full" style="height:45px; border-radius:10px; border:1px solid #e2e8f0; padding:0 15px;" value="${s ? (s.mohonurl || '') : ''}" placeholder="https://...">
-                    </div>
+                    <div><label class="swal-label-custom">URL Informasi</label><input id="swal-infourl" class="swal-input-custom" value="${s ? (s.infourl || '') : ''}" placeholder="https://..."></div>
+                    <div><label class="swal-label-custom">URL Permohonan</label><input id="swal-mohonurl" class="swal-input-custom" value="${s ? (s.mohonurl || '') : ''}" placeholder="https://..."></div>
                 </div>
-                <div>
-                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Penerangan / Description</label>
-                    <textarea id="swal-description"></textarea>
-                </div>
+                <div><label class="swal-label-custom">Penerangan / Nota</label><textarea id="swal-description"></textarea></div>
             </div>
         `,
-        width: '850px',
-        showCancelButton: true,
+        width: '640px',
+        showConfirmButton: true,
+        confirmButtonText: 'Hantar',
         showDenyButton: id ? true : false,
-        confirmButtonText: 'Simpan Data',
         denyButtonText: 'Padam Servis',
-        cancelButtonText: 'Batal',
-        confirmButtonColor: '#3b82f6',
-        denyButtonColor: '#ef4444',
-        backdrop: `rgba(15, 23, 42, 0.5) blur(10px)`,
+        buttonsStyling: false,
+        customClass: {
+            confirmButton: 'btn-swal-hantar', // Kanan
+            denyButton: 'btn-swal-padam',     // Kiri
+            closeButton: 'swal2-close'
+        },
+        backdrop: `rgba(15, 23, 42, 0.5) blur(8px)`,
         didOpen: () => {
             ClassicEditor.create(document.querySelector('#swal-description'), {
                 toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList']
-            }).then(newEditor => {
-                editor = newEditor;
-                if(s) editor.setData(s.perincian?.description || '');
-            });
+            }).then(newEditor => { editor = newEditor; if(s) editor.setData(s.perincian?.description || ''); });
         },
         preConfirm: () => {
             const name = document.getElementById('swal-namaservis').value;
-            const desc = editor.getData();
-            if (!name || !desc) {
-                Swal.showValidationMessage('Nama Servis & Penerangan wajib diisi!');
-                return false;
-            }
-            return {
-                idservis: id,
-                namaservis: name,
-                infourl: document.getElementById('swal-infourl').value,
-                mohonurl: document.getElementById('swal-mohonurl').value,
-                description: desc
-            }
+            if (!name) { Swal.showValidationMessage('Nama Servis wajib diisi!'); return false; }
+            return { idservis: id, namaservis: name, infourl: document.getElementById('swal-infourl').value, mohonurl: document.getElementById('swal-mohonurl').value, description: editor.getData() }
         }
     }).then((result) => {
         if (result.isConfirmed) { saveServis(result.value); } 
@@ -242,45 +231,39 @@ function openEditor(id = null) {
     });
 }
 
+// Logic Save & Delete (Kekal Sama)
 async function saveServis(data){
     const fd = new FormData();
     Object.keys(data).forEach(key => fd.append(key, data[key] || ''));
     try {
         const res = await fetch('<?= base_url("dashboard/TambahanPerincian/saveServis") ?>', { method:'POST', body:fd });
         const json = await res.json();
-        if(json.status){ fetchServis(); Swal.fire({ icon: 'success', title: 'Berjaya', text: 'Data telah disimpan!', timer: 1500, showConfirmButton: false }); }
+        if(json.status){ fetchServis(); Swal.fire({ icon: 'success', title: 'Berjaya', text: 'Data disimpan!', timer: 1500, showConfirmButton: false }); }
     } catch (e) { console.error(e); }
 }
 
 async function deleteServis(id){
-    Swal.fire({
-        title: 'Anda pasti?',
-        text: "Data ini akan dipadam selamanya!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#ef4444',
-        confirmButtonText: 'Ya, Padam!'
-    }).then(async (result) => {
+    Swal.fire({ title: 'Padam rekod?', text: "Tindakan ini kekal!", icon: 'warning', showCancelButton: true, confirmButtonColor: '#ef4444', confirmButtonText: 'Ya, Padam', cancelButtonText: 'Batal' }).then(async (result) => {
         if (result.isConfirmed) {
-            const fd = new FormData();
-            fd.append('idservis', id);
+            const fd = new FormData(); fd.append('idservis', id);
             await fetch('<?= base_url("dashboard/TambahanPerincian/deleteServis") ?>', { method:'POST', body:fd });
-            fetchServis();
-            Swal.fire('Dipadam!', 'Servis telah dibuang.', 'success');
+            fetchServis(); Swal.fire('Dipadam!', 'Rekod dibuang.', 'success');
         }
     });
 }
 
+// 4. Pop-up Pautan Luar
 function showLinks(id) {
     const s = allServis.find(item => String(item.idservis) === String(id));
     Swal.fire({
-        title: '<span class="text-xl font-bold">Pautan Servis</span>',
-        html: `<div class="text-left space-y-4 p-2">
-                <div><p class="text-[10px] font-bold text-gray-400 uppercase">URL Informasi</p>${s.infourl ? `<a href="${s.infourl}" target="_blank" class="text-blue-600 break-all text-sm underline font-medium">${s.infourl}</a>` : '<span class="text-slate-400 text-sm italic">Tiada pautan</span>'}</div>
-                <div><p class="text-[10px] font-bold text-gray-400 uppercase">URL Permohonan</p>${s.mohonurl ? `<a href="${s.mohonurl}" target="_blank" class="text-blue-600 break-all text-sm underline font-medium">${s.mohonurl}</a>` : '<span class="text-slate-400 text-sm italic">Tiada pautan</span>'}</div>
+        title: '<span class="text-xl font-bold">Pautan Luar</span>',
+        showCloseButton: true,
+        showConfirmButton: false,
+        html: `<div class="text-left space-y-6 p-4 mt-2">
+                <div><p class="swal-label-custom" style="font-size: 0.9rem;">URL Informasi</p>${s.infourl ? `<a href="${s.infourl}" target="_blank" class="text-blue-600 break-all text-lg underline font-semibold">${s.infourl}</a>` : '<span class="text-slate-400 text-base italic">Tiada pautan disediakan</span>'}</div>
+                <div><p class="swal-label-custom" style="font-size: 0.9rem;">URL Permohonan</p>${s.mohonurl ? `<a href="${s.mohonurl}" target="_blank" class="text-blue-600 break-all text-lg underline font-semibold">${s.mohonurl}</a>` : '<span class="text-slate-400 text-base italic">Tiada pautan disediakan</span>'}</div>
             </div>`,
-        confirmButtonColor: '#4f46e5',
-        backdrop: `rgba(15, 23, 42, 0.5) blur(10px)`
+        backdrop: `rgba(15, 23, 42, 0.5) blur(8px)`
     });
 }
 
