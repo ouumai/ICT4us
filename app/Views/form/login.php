@@ -3,19 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Log Masuk</title>
+    <title>Log Masuk | ICT4U</title>
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
         :root {
             --brand-color: #4f46e5;
-            --brand-hover: #4338ca;
+            --brand-hover: #3730a3; /* Biru gelap bila hover */
         }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             background-color: #ffffff;
             height: 100vh;
             margin: 0;
@@ -27,7 +28,7 @@
             height: 100vh;
         }
 
-        /* --- Left Side: Visuals --- */
+        /* --- Bahagian Kiri (Visual) --- */
         .image-section {
             flex: 1;
             background: url('https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=1200') center/cover no-repeat;
@@ -42,7 +43,7 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(135deg, rgba(79, 70, 229, 0.8), rgba(67, 56, 202, 0.4));
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.85), rgba(124, 58, 237, 0.5));
         }
 
         .overlay-content {
@@ -50,47 +51,56 @@
             z-index: 2;
             color: white;
             max-width: 500px;
+            animation: fadeIn 0.8s ease-out;
         }
 
         .glass-card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 30px;
-            border-radius: 24px;
+            padding: 45px;
+            border-radius: 32px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.2);
         }
 
-        /* --- Right Side: Form --- */
+        /* --- Bahagian Kanan (Form) --- */
         .form-section {
-            width: 500px;
+            width: 550px;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            padding: 60px;
+            padding: 80px;
             background: #fff;
             overflow-y: auto;
         }
 
         .brand-logo {
             font-weight: 800;
-            font-size: 1.5rem;
+            font-size: 1.75rem;
             color: var(--brand-color);
-            margin-bottom: 40px;
+            margin-bottom: 50px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            letter-spacing: -0.5px;
         }
 
+
         .form-control {
-            border: 1.5px solid #e2e8f0;
-            padding: 12px 16px;
-            border-radius: 12px;
+            border: 2px solid #f1f5f9;
+            background: #f8fafc;
+            padding: 14px 18px;
+            border-radius: 16px;
             font-size: 0.95rem;
-            transition: all 0.2s;
+            font-weight: 600;
+            color: #334155;
+            transition: all 0.3s;
         }
 
         .form-control:focus {
             border-color: var(--brand-color);
+            background: white;
             box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
         }
 
@@ -98,41 +108,36 @@
             background: var(--brand-color);
             color: white;
             border: none;
-            padding: 12px;
-            border-radius: 12px;
-            font-weight: 600;
-            transition: 0.3s;
-            margin-top: 10px;
+            padding: 14px;
+            border-radius: 16px;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-top: 15px;
+            box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
         }
 
         .btn-login:hover {
             background: var(--brand-hover);
-            transform: translateY(-1px);
+            color: white;
         }
 
-        .social-btn {
-            border: 1.5px solid #e2e8f0;
-            background: white;
-            padding: 10px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            font-weight: 500;
-            color: #475569;
-            transition: 0.2s;
+        .section-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #1e293b;
+            margin-bottom: 8px;
         }
 
-        .social-btn:hover {
-            background: #f8fafc;
-            border-color: #cbd5e1;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* --- Responsive --- */
         @media (max-width: 992px) {
             .image-section { display: none; }
-            .form-section { width: 100%; padding: 30px; }
+            .form-section { width: 100%; padding: 40px; }
         }
     </style>
 </head>
@@ -142,8 +147,8 @@
     <div class="image-section">
         <div class="overlay-content">
             <div class="glass-card">
-                <h2 class="fw-bold mb-3">Revolusi Digital ICT4U</h2>
-                <p class="mb-0 opacity-90">Satu platform untuk semua keperluan pengurusan sistem anda. Pantas, selamat dan efisien</p>
+                <h2 class="fw-extrabold mb-3 text-3xl">Revolusi Digital ICT4U</h2>
+                <p class="mb-0 opacity-90 leading-relaxed font-medium">Satu platform untuk semua keperluan pengurusan sistem anda. Pantas, selamat dan efisien untuk masa hadapan digital.</p>
             </div>
         </div>
     </div>
@@ -153,42 +158,43 @@
             <i class="bi bi-cpu-fill"></i> ICT4U
         </div>
 
-        <div class="mb-4">
-            <h1 class="fw-bold h3 mb-2">Selamat Kembali</h1>
-            <p class="text-muted">Masukkan emel dan kata laluan anda untuk akses.</p>
+        <div class="mb-5">
+            <h1 class="section-title">Selamat Kembali</h1>
+            <p class="text-slate-500 font-semibold">Masukkan emel dan kata laluan anda untuk akses.</p>
         </div>
 
         <?php if(session()->getFlashdata('error')): ?>
-            <div class="alert alert-danger border-0 rounded-4 small p-3 mb-4">
-                <i class="bi bi-exclamation-circle me-2"></i> <?= session()->getFlashdata('error') ?>
+            <div class="alert alert-danger border-0 rounded-4 small p-3 mb-4 flex align-items-center">
+                <i class="bi bi-exclamation-circle-fill me-2"></i> 
+                <strong><?= session()->getFlashdata('error') ?></strong>
             </div>
         <?php endif; ?>
 
         <form action="<?= base_url('/login') ?>" method="post">
             <?= csrf_field() ?>
             
-            <div class="mb-3">
-                <label class="form-label small fw-semibold">Alamat Emel</label>
+            <div class="mb-4">
+                <label class="form-label small fw-bold text-slate-700 ml-1">Alamat Emel</label>
                 <input type="email" name="email" class="form-control" placeholder="nama@syarikat.com" required>
             </div>
 
-            <div class="mb-3">
-                <div class="d-flex justify-content-between">
-                    <label class="form-label small fw-semibold">Kata Laluan</label>
-                    <a href="<?= base_url('/forgot-password') ?>" class="small text-decoration-none fw-bold text-primary">Lupa?</a>
+            <div class="mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <label class="form-label small fw-bold text-slate-700 m-0">Kata Laluan</label>
+                    <a href="<?= base_url('/forgot-password') ?>" class="small text-decoration-none fw-bold text-indigo-600">Lupa Kata Laluan?</a>
                 </div>
                 <input type="password" name="password" class="form-control" placeholder="••••••••" required>
-        </div>
+            </div>
 
-            <button type="submit" class="btn btn-login w-100 mb-3">Log Masuk</button>
+            <button type="submit" class="btn btn-login w-100 mb-4">Log Masuk Sekarang</button>
 
-            <p class="text-center small text-muted">
-                Belum mempunyai akaun? <a href="<?= base_url('/register') ?>" class="text-primary fw-bold text-decoration-none">Daftar </a>
+            <p class="text-center small text-slate-500 font-semibold">
+                Belum mempunyai akaun? <a href="<?= base_url('/register') ?>" class="text-indigo-600 fw-bold text-decoration-none hover:underline">Daftar Sekarang</a>
             </p>
         </form>
 
         <div class="mt-auto pt-5 text-center">
-            <p class="small text-muted">&copy; 2026 ICT4U Management System</p>
+            <p class="small text-slate-400 font-bold uppercase tracking-wider">&copy; 2026 ICT4U Management System</p>
         </div>
     </div>
 </div>
