@@ -29,7 +29,7 @@ class UserController extends BaseController
     public function getAll(): ResponseInterface
     {
         $users = $this->userModel
-            ->select('id, username, email, role, status')
+            ->select('id, fullname, email, role, status') // Tukar username ke fullname
             ->orderBy('created_at', 'DESC')
             ->findAll();
 
@@ -51,7 +51,7 @@ class UserController extends BaseController
 
         return $this->response->setJSON([
             'id'       => $user['id'],
-            'username' => $user['username'],
+            'fullname' => $user['fullname'], // Tukar username ke fullname
             'email'    => $user['email'],
             'role'     => $user['role'],
             'status'   => $user['status'],
@@ -67,7 +67,7 @@ class UserController extends BaseController
         $validation = \Config\Services::validation();
 
         $validation->setRules([
-            'username' => 'required|min_length[3]|max_length[50]',
+            'fullname' => 'required|min_length[3]|max_length[100]', // Rules untuk fullname
             'email'    => 'required|valid_email|is_unique[users.email]',
             'password' => 'required|min_length[6]',
             'role'     => 'required|in_list[admin,uploader]',
@@ -81,7 +81,7 @@ class UserController extends BaseController
         }
 
         $data = [
-            'username' => trim($this->request->getPost('username')),
+            'fullname' => trim($this->request->getPost('fullname')), // Simpan fullname
             'email'    => trim($this->request->getPost('email')),
             'password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
             'role'     => $this->request->getPost('role'),
@@ -110,7 +110,7 @@ class UserController extends BaseController
 
         $validation = \Config\Services::validation();
         $validation->setRules([
-            'username' => 'required|min_length[3]|max_length[50]',
+            'fullname' => 'required|min_length[3]|max_length[100]', // Rules untuk fullname
             'email'    => "required|valid_email|is_unique[users.email,id,{$id}]",
             'role'     => 'required|in_list[admin,uploader]',
             'status'   => 'required|in_list[active,inactive]',
@@ -124,7 +124,7 @@ class UserController extends BaseController
         }
 
         $data = [
-            'username' => trim($this->request->getPost('username')),
+            'fullname' => trim($this->request->getPost('fullname')), // Update fullname
             'email'    => trim($this->request->getPost('email')),
             'role'     => $this->request->getPost('role'),
             'status'   => $this->request->getPost('status'),
@@ -144,7 +144,7 @@ class UserController extends BaseController
     }
 
     /* =========================
-       DELETE USER
+       DELETE USER (Dikekalkan)
     ========================= */
     public function delete($id): ResponseInterface
     {
@@ -164,7 +164,7 @@ class UserController extends BaseController
     }
 
     /* =========================
-       DASHBOARD COUNTS
+       DASHBOARD COUNTS (Dikekalkan)
     ========================= */
     private function getDashboardCounts(): array
     {
