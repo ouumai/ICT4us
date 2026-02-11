@@ -143,7 +143,7 @@
         <div class="overlay-content">
             <div class="glass-card">
                 <h2 class="fw-bold mb-3">Revolusi Digital ICT4U</h2>
-                <p class="mb-0 opacity-90">Satu platform untuk semua keperluan pengurusan sistem anda. Pantas, selamat, dan efisien.</p>
+                <p class="mb-0 opacity-90">Satu platform untuk semua keperluan pengurusan sistem anda. Pantas, selamat dan efisien</p>
             </div>
         </div>
     </div>
