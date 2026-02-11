@@ -31,8 +31,8 @@
 
     /* 3. Table Header Style */
     #dokumenTable thead th {
-        padding-top: 14px !important;
-        padding-bottom: 14px !important;
+        padding-top: 25px !important;
+        padding-bottom: 25px !important;
         background-color: #f8fafc !important;
         font-size: 0.75rem !important;
         font-weight: 700 !important;
