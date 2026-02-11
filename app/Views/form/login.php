@@ -28,10 +28,11 @@
             height: 100vh;
         }
 
-        /* --- Bahagian Kiri (Visual) --- */
+        /* --- Left Side: Visuals --- */
         .image-section {
             flex: 1;
-            background: url('https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=1200') center/cover no-repeat;
+            /* Guna base_url() untuk pastikan path betul */
+            background: url('<?= base_url('assets/image/dectarUKM.jpg') ?>') center/cover no-repeat;
             position: relative;
             display: flex;
             align-items: center;
@@ -55,9 +56,9 @@
         }
 
         .glass-card {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
             border: 1px solid rgba(255, 255, 255, 0.2);
             padding: 45px;
             border-radius: 32px;
