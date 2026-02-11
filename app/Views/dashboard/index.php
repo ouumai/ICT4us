@@ -2,6 +2,9 @@
 
 <?= $this->section('content') ?>
 
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
 <style>
     :root {
         --soft-lilac: #f5f3ff;
@@ -10,21 +13,36 @@
         --emerald-green: #10b981;
     }
 
+    /* 1. Global Setup */
+    body, .content-wrapper, h1, h2, h3, h4, h5, h6, p, span, div, strong {
+        font-family: 'Plus Jakarta Sans', sans-serif !important;
+    }
+
+    /* Remove Default Headers */
+    .content-header, .breadcrumb, .content-wrapper > section.content-header,
+    .content-wrapper > .container-fluid > .d-md-flex.align-items-center.justify-content-between.mb-5 {
+        display: none !important;
+    }
+
+    /* 2. UI Styles */
+    .glass-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
+        border: 1px solid #e2e8f0;
+    }
+
     .stat-card {
         border: none;
         border-radius: 28px;
         padding: 1.8rem;
         transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        background: white;
     }
 
     .stat-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 20px 30px -10px rgba(0,0,0,0.05) !important;
+        transform: translateY(-10px); /* Bergerak 10px ke atas */
+        box-shadow: 0 20px 30px -10px rgba(0,0,0,0.1) !important;
     }
-
-    .bg-lilac-premium { background: var(--soft-lilac); color: var(--deep-lilac); }
-    .bg-emerald-premium { background: var(--soft-emerald); color: var(--emerald-green); }
 
     .icon-box {
         width: 55px; height: 55px;
@@ -33,169 +51,185 @@
         font-size: 1.4rem;
         margin-bottom: 1.2rem;
         background: white;
-        box-shadow: 0 8px 15px rgba(0,0,0,0.04);
     }
 
     .chart-card {
         border-radius: 30px;
-        border: none;
+        border: 1px solid #e2e8f0;
         background: white;
-        padding: 2rem;
+        padding: 2.5rem;
     }
 
-    /* Layout Tambahan: Action Buttons */
-    .btn-action-card {
-        background: var(--soft-lilac);
-        border: 2px dashed var(--deep-lilac);
-        border-radius: 20px;
-        color: var(--deep-lilac);
-        padding: 20px;
-        text-align: center;
-        transition: 0.3s;
-        cursor: pointer;
-        display: block;
-        text-decoration: none;
+    /* Date Stamp Style - Ikut style grey yang Mai nak */
+    .date-stamp {
+        background: rgba(255, 255, 255, 0.5);
+        border: 1px solid #e2e8f0;
+        padding: 8px 16px;
+        border-radius: 12px;
+        font-size: 0.85rem;
+        color: #64748b; /* Slate 500 */
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 8px;
     }
 
-    .btn-action-card:hover {
-        background: var(--deep-lilac);
-        color: white;
-    }
+    /* Custom Gray Text */
+    .text-slate-500 { color: #64748b !important; }
+    .fw-800 { font-weight: 800 !important; }
+    .fw-700 { font-weight: 700 !important; }
 </style>
 
-<div class="row g-4">
-    <div class="col-md-3">
-        <div class="stat-card shadow-sm" style="background: var(--deep-lilac); color: white;">
-            <div class="icon-box text-purple bg-opacity-20 bg-white text-white">
-                <i class="bi bi-patch-check"></i>
+<div class="container-fluid py-4">
+    
+    <div class="glass-card rounded-3xl p-8 mb-8 flex flex-col md:flex-row items-center justify-between">
+        <div class="flex items-center gap-6">
+             <div class="bg-indigo-100 p-3 rounded-2xl">
+                <i class="bi bi-grid-fill text-3xl text-indigo-600"></i>
             </div>
-            <h6 class="fw-700 small text-uppercase opacity-75 mb-1">Servis Kelulusan</h6>
-            <h2 class="fw-800 mb-0"><?= number_format($totalServisKelulusan) ?></h2>
+            <div>
+                <h1 class="text-3xl fw-800 text-slate-900 mb-1">Dashboard Utama</h1>
+                <p class="text-slate-500 font-medium mb-0">Ringkasan status permohonan dan statistik dokumen sistem.</p>
+            </div>
+        </div>
+        
+        <div class="mt-4 md:mt-0">
+            <div class="date-stamp shadow-sm">
+                <i class="bi bi-calendar-event text-slate-500"></i>
+                <span id="currentDateTime" class="text-slate-500"><?= date('M d 2026, H:i:s') ?></span>
+            </div>
         </div>
     </div>
 
-    <div class="col-md-3">
-        <div class="stat-card shadow-sm" style="background: var(--emerald-green); color: white;">
-            <div class="icon-box bg-white bg-opacity-20 text-white border-0">
-                <i class="bi bi-file-earmark-check"></i>
+    <div class="row g-4 mb-8">
+        <div class="col-md-3">
+            <div class="stat-card shadow-sm" style="background: var(--deep-lilac); color: white;">
+                <div class="icon-box bg-white bg-opacity-20 text-white border-0">
+                    <i class="bi bi-patch-check"></i>
+                </div>
+                <h6 class="fw-700 small text-uppercase opacity-75 mb-1">Servis Kelulusan</h6>
+                <h2 class="fw-800 mb-0" style="font-size: 2.2rem;"><?= number_format($totalServisKelulusan) ?></h2>
             </div>
-            <h6 class="fw-700 small text-uppercase opacity-75 mb-1 text-white">Dokumen Lulus</h6>
-            <h2 class="fw-800 mb-0"><?= number_format($dokApproved) ?></h2>
+        </div>
+
+        <div class="col-md-3">
+            <div class="stat-card shadow-sm" style="background: var(--emerald-green); color: white;">
+                <div class="icon-box bg-white bg-opacity-20 text-white border-0">
+                    <i class="bi bi-file-earmark-check"></i>
+                </div>
+                <h6 class="fw-700 small text-uppercase opacity-75 mb-1 text-white">Dokumen Lulus</h6>
+                <h2 class="fw-800 mb-0" style="font-size: 2.2rem;"><?= number_format($dokApproved) ?></h2>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="stat-card bg-emerald-premium shadow-sm border" style="background: var(--soft-emerald);">
+                <div class="icon-box text-success shadow-sm">
+                    <i class="bi bi-folder2-open"></i>
+                </div>
+                <h6 class="fw-700 small text-uppercase mb-1 opacity-75" style="color: var(--emerald-green);">Jumlah Dokumen</h6>
+                <h2 class="fw-800 mb-0" style="font-size: 2.2rem; color: #10b981;"><?= number_format($totalDokumen) ?></h2>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="stat-card bg-lilac-premium shadow-sm border" style="background: var(--soft-lilac);">
+                <div class="icon-box text-purple shadow-sm">
+                    <i class="bi bi-ui-checks-grid"></i>
+                </div>
+                <h6 class="fw-700 small text-uppercase mb-1 opacity-75" style="color: var(--deep-lilac);">Perincian Modul</h6>
+                <h2 class="fw-800 mb-0" style="font-size: 2.2rem; color: var(--deep-lilac);"><?= number_format($totalPerincianModul) ?></h2>
+            </div>
         </div>
     </div>
 
-    <div class="col-md-3">
-        <div class="stat-card bg-emerald-premium shadow-sm border">
-            <div class="icon-box text-success">
-                <i class="bi bi-folder2-open"></i>
-            </div>
-            <h6 class="fw-700 small text-uppercase mb-1 opacity-75">Jumlah Dokumen</h6>
-            <h2 class="fw-800 mb-0"><?= number_format($totalDokumen) ?></h2>
-        </div>
-    </div>
+    <div class="row">
+        <div class="col-lg-5">
+            <div class="chart-card shadow-sm">
+                <h5 class="fw-800 mb-6 text-dark">Analisis Status Dokumen</h5>
+                <div style="height: 250px;">
+                    <canvas id="statusChart"></canvas>
+                </div>
+                
+                <div class="mt-8 space-y-4">
+                    <div>
+                        <div class="flex justify-between mb-2">
+                            <span class="text-sm fw-700 text-amber-600">Pending</span>
+                            <span class="text-sm fw-800 text-slate-700"><?= $dokPending ?></span>
+                        </div>
+                        <div class="progress rounded-pill shadow-sm" style="height: 10px; background: #f1f5f9;">
+                            <div class="progress-bar bg-warning" style="width: <?= ($totalDokumen > 0) ? ($dokPending/$totalDokumen)*100 : 0 ?>%"></div>
+                        </div>
+                    </div>
 
-    <div class="col-md-3">
-        <div class="stat-card bg-lilac-premium shadow-sm border">
-            <div class="icon-box text-purple">
-                <i class="bi bi-ui-checks-grid"></i>
+                    <div>
+                        <div class="flex justify-between mb-2">
+                            <span class="text-sm fw-700 text-success">Approved</span>
+                            <span class="text-sm fw-800 text-slate-700"><?= $dokApproved ?></span>
+                        </div>
+                        <div class="progress rounded-pill shadow-sm" style="height: 10px; background: #f1f5f9;">
+                            <div class="progress-bar bg-success" style="width: <?= ($totalDokumen > 0) ? ($dokApproved/$totalDokumen)*100 : 0 ?>%"></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between mb-2">
+                            <span class="text-sm fw-700 text-danger">Rejected</span>
+                            <span class="text-sm fw-800 text-slate-700"><?= $dokRejected ?></span>
+                        </div>
+                        <div class="progress rounded-pill shadow-sm" style="height: 10px; background: #f1f5f9;">
+                            <div class="progress-bar bg-danger" style="width: <?= ($totalDokumen > 0) ? ($dokRejected/$totalDokumen)*100 : 0 ?>%"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <h6 class="fw-700 small text-uppercase mb-1 opacity-75">Perincian Modul</h6>
-            <h2 class="fw-800 mb-0"><?= number_format($totalPerincianModul) ?></h2>
         </div>
+        <div class="col-lg-7"></div>
     </div>
 </div>
 
-<div class="row mt-4 g-4">
-    <div class="col-lg-4">
-        <div class="chart-card shadow-sm h-100">
-            <h5 class="fw-800 mb-4 text-dark">Status Keseluruhan</h5>
-            <div style="height: 200px;">
-                <canvas id="statusChart"></canvas>
-            </div>
-            <div class="mt-4">
-                <div class="d-flex justify-content-between mb-1">
-                    <span class="small fw-bold text-warning">Pending</span>
-                    <span class="small fw-bold"><?= $dokPending ?></span>
-                </div>
-                <div class="progress rounded-pill mb-3" style="height: 8px;">
-                    <div class="progress-bar bg-warning" style="width: <?= ($totalDokumen > 0) ? ($dokPending/$totalDokumen)*100 : 0 ?>%"></div>
-                </div>
-
-                <div class="d-flex justify-content-between mb-1">
-                    <span class="small fw-bold text-success">Approved</span>
-                    <span class="small fw-bold"><?= $dokApproved ?></span>
-                </div>
-                <div class="progress rounded-pill mb-3" style="height: 8px;">
-                    <div class="progress-bar bg-success" style="width: <?= ($totalDokumen > 0) ? ($dokApproved/$totalDokumen)*100 : 0 ?>%"></div>
-                </div>
-
-                <div class="d-flex justify-content-between mb-1">
-                    <span class="small fw-bold text-danger">Rejected</span>
-                    <span class="small fw-bold"><?= $dokRejected ?></span>
-                </div>
-                <div class="progress rounded-pill" style="height: 8px;">
-                    <div class="progress-bar bg-danger" style="width: <?= ($totalDokumen > 0) ? ($dokRejected/$totalDokumen)*100 : 0 ?>%"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 <?= $this->endSection() ?>
+
 <?= $this->section('scripts') ?>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    fetch('<?= base_url('dashboard/getData') ?>')
-        .then(response => response.json())
-        .then(json => {
-            const chartData = json.data.charts;
+    document.addEventListener('DOMContentLoaded', () => {
+        // Update Time
+        setInterval(() => {
+            const now = new Date();
+            const options = { month: 'short', day: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+            document.getElementById('currentDateTime').innerText = now.toLocaleString('en-US', options).replace(',', '');
+        }, 1000);
 
-            // 1. Line Chart (Whole Numbers Tick)
-            new Chart(document.getElementById('monthlyChart'), {
-                type: 'line',
-                data: {
-                    labels: chartData.monthly.labels,
-                    datasets: [{
-                        label: 'Documents',
-                        data: chartData.monthly.data,
-                        borderColor: '#10b981',
-                        backgroundColor: 'rgba(16, 185, 129, 0.05)',
-                        fill: true,
-                        tension: 0.4,
-                        borderWidth: 4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                stepSize: 1, // Memastikan paksi Y hanya nombor bulat
-                                callback: function(value) { if (value % 1 === 0) { return value; } }
-                            }
+        // Chart
+        const ctx = document.getElementById('statusChart');
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Pending', 'Approved', 'Rejected'],
+                datasets: [{
+                    data: [<?= $dokPending ?>, <?= $dokApproved ?>, <?= $dokRejected ?>],
+                    backgroundColor: ['#f59e0b', '#10b981', '#ef4444'],
+                    borderWidth: 0,
+                    hoverOffset: 12
+                }]
+            },
+            options: {
+                cutout: '75%',
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'right',
+                        labels: {
+                            usePointStyle: true,
+                            padding: 25,
+                            font: { size: 13, weight: '700', family: "'Plus Jakarta Sans', sans-serif" }
                         }
                     }
-                }
-            });
-
-            // 2. Status Doughnut Chart (Pending, Approved, Rejected)
-            new Chart(document.getElementById('statusChart'), {
-                type: 'doughnut',
-                data: {
-                    labels: ['Pending', 'Approved', 'Rejected'],
-                    datasets: [{
-                        data: chartData.status.data,
-                        backgroundColor: ['#f59e0b', '#10b981', '#ef4444'],
-                        borderWidth: 0
-                    }]
                 },
-                options: {
-                    cutout: '80%',
-                    plugins: { legend: { display: false } },
-                    maintainAspectRatio: false
-                }
-            });
+                maintainAspectRatio: false
+            }
         });
+    });
 </script>
 <?= $this->endSection() ?>
