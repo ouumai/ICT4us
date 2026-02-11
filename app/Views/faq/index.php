@@ -2,7 +2,7 @@
 
 <?= $this->section('content') ?>
 
-<script>document.title = "Pengurusan FAQ Modul | ICT4U";</script>
+<script>document.title = "Pengurusan FAQ Modul";</script>
 
 <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
