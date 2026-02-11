@@ -104,7 +104,7 @@
                                 <input type="email" name="email" class="form-control modern-input" value="<?= old('email', $user['email']) ?>" required>
                             </div>
                             <div class="col-12 text-end">
-                                <button type="submit" class="btn btn-primary px-4 py-2.5 fw-bold rounded-3 btn-submit bg-indigo-600 border-0 shadow-lg">
+                                <button type="submit" class="btn-submit bg-blue-600 hover:bg-blue-800 text-white px-6 py-2.5 rounded-2xl font-bold transition-all duration-300 shadow-lg shadow-blue-100 border-0">
                                     Simpan Perubahan Profil
                                 </button>
                             </div>
@@ -142,7 +142,9 @@
                         </div>
                         <div class="col-12 text-end mt-4">
                             <div id="pw-error" class="text-danger small mb-3 d-none font-bold">⚠️ Kata laluan tidak sepadan!</div>
-                            <button type="submit" class="btn btn-dark px-4 py-2.5 fw-bold rounded-3 btn-submit bg-slate-900 border-0" id="btn-submit-pw">Kemaskini Password</button>
+                            <button type="submit" id="btn-submit-pw" class="btn-submit bg-blue-600 hover:bg-blue-800 text-white px-6 py-2.5 rounded-2xl font-bold transition-all duration-300 border-0 shadow-lg">
+                                Kemaskini Password
+                            </button>
                         </div>
                     </div>
                 </form>
@@ -152,7 +154,6 @@
 </div>
 
 <script>
-    // Script dikekalkan (SweetAlert, Preview, Matcher)
     document.addEventListener('DOMContentLoaded', function() {
         <?php if(session()->getFlashdata('success')): ?>
             Swal.fire({ icon: 'success', title: 'Berjaya!', text: '<?= session()->getFlashdata('success') ?>', timer: 2500, showConfirmButton: false });
@@ -204,6 +205,20 @@
                 icon.classList.toggle('bi-eye-slash');
             });
         });
+
+        // Password matching logic
+        const newPw = document.getElementById('new_pw'), confPw = document.getElementById('conf_pw'), 
+              err = document.getElementById('pw-error'), btn = document.getElementById('btn-submit-pw');
+        function checkMatch() {
+            if (confPw.value.length > 0) {
+                const match = newPw.value === confPw.value;
+                err.classList.toggle('d-none', match);
+                confPw.style.borderColor = match ? '#10b981' : '#ef4444';
+                btn.disabled = !match;
+            }
+        }
+        newPw.addEventListener('input', checkMatch);
+        confPw.addEventListener('input', checkMatch);
     });
 </script>
 <?= $this->endSection() ?>
