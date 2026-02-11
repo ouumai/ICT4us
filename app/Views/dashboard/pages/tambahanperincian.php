@@ -31,7 +31,7 @@
         border-radius: 1.5rem;
     }
 
-    /* 3. Modern Input Size (Search & Filter) */
+    /* 3. Modern Input & Placeholder (Ikut Rujukan) */
     .modern-input-size {
         height: 56px !important;
         border-radius: 14px !important;
@@ -42,12 +42,27 @@
     }
 
     .input-with-icon { padding-left: 3.5rem !important; }
-    .icon-search-fix {
-        position: absolute; left: 1.3rem; top: 50%; transform: translateY(-50%);
-        color: #94a3b8; font-size: 1.2rem; z-index: 10;
+
+    #searchInput::placeholder {
+        color: #94a3b8 !important; /* Kelabu lembut rujukan */
+        font-weight: 600;
+        opacity: 1;
     }
 
-    /* 4. Table Action Buttons (Uniform Large Size) */
+    .icon-search-fix {
+        position: absolute; left: 1.3rem; top: 50%; transform: translateY(-50%);
+        color: #94a3b8 !important; font-size: 1.2rem; z-index: 10;
+    }
+
+    /* 4. Table Header Styling (Kecil & Kemas) */
+    .compact-th {
+        padding-top: 12px !important;
+        padding-bottom: 12px !important;
+        background-color: #f8fafc !important; /* bg-slate-50 */
+        white-space: nowrap;
+    }
+
+    /* 5. Table Action Buttons */
     .btn-action-table-large {
         width: 160px; height: 44px; display: inline-flex; align-items: center; justify-content: center;
         gap: 10px; font-size: 11px !important; font-weight: 800 !important; border-radius: 12px;
@@ -58,50 +73,16 @@
     .btn-edit { background: #EEF2FF; color: #4F46E5; border-color: #E0E7FF; }
     .btn-edit:hover { background: #4F46E5; color: white; }
 
-    /* 5. SweetAlert Button Styling (Padam | Hantar) */
-    .swal2-actions {
-        width: 100% !important;
-        display: flex !important;
-        flex-direction: row !important; 
-        gap: 12px !important;
-        margin-top: 1.5rem !important;
-        padding: 0 1rem !important;
-    }
-
-    .btn-swal-hantar {
-        flex: 1 !important;
-        background: #3b82f6 !important; 
-        color: white !important; 
-        font-weight: 700 !important;
-        padding: 14px !important; 
-        border-radius: 16px !important;
-        border: none !important; 
-        font-size: 0.95rem !important;
-        order: 2;
-    }
-
-    .btn-swal-padam {
-        flex: 1 !important;
-        background: #fee2e2 !important; 
-        color: #ef4444 !important; 
-        font-weight: 700 !important;
-        padding: 14px !important; 
-        border-radius: 16px !important;
-        border: none !important;
-        font-size: 0.95rem !important;
-        order: 1;
-    }
-
+    /* SweetAlert & Others */
+    .swal2-actions { width: 100% !important; display: flex !important; flex-direction: row !important; gap: 12px !important; margin-top: 1.5rem !important; padding: 0 1rem !important; }
+    .btn-swal-hantar { flex: 1 !important; background: #3b82f6 !important; color: white !important; font-weight: 700 !important; padding: 14px !important; border-radius: 16px !important; border: none !important; font-size: 0.95rem !important; order: 2; }
+    .btn-swal-padam { flex: 1 !important; background: #fee2e2 !important; color: #ef4444 !important; font-weight: 700 !important; padding: 14px !important; border-radius: 16px !important; border: none !important; font-size: 0.95rem !important; order: 1; }
     .swal2-popup { border-radius: 28px !important; padding: 2rem !important; }
-    .swal2-close { outline: none !important; box-shadow: none !important; }
     .swal-label-custom { display: block; font-size: 0.8rem; font-weight: 700; color: #1e293b; margin-bottom: 8px; }
     .swal-input-custom { height: 52px; border-radius: 12px; border: 1px solid #e2e8f0; padding: 0 15px; width: 100%; background-color: #ffffff; font-weight: 500; font-size: 0.95rem; }
     .ck-editor__main>.ck-editor__editable { min-height: 200px !important; border-radius: 0 0 12px 12px !important; }
     .ck.ck-editor__top { border-radius: 12px 12px 0 0 !important; }
-
-    /* Tailwind Conflict Fixes */
     .text-slate-500 { color: #64748b; }
-
 </style>
 
 <div class="container-fluid py-4">
@@ -136,11 +117,10 @@
         <div class="overflow-x-auto">
             <table class="w-full text-left">
                 <thead>
-                    <tr class="text-[11px] font-extrabold text-slate-400 uppercase tracking-widest bg-slate-50/50 border-b">
-                        <th class="px-8 py-5">Maklumat Servis</th>
-                        <th class="px-8 py-5 text-center">Pautan Luar</th>
-                        <th class="px-8 py-5 text-right">Tindakan</th>
-                    </tr>
+                    <tr class="text-[11px] font-extrabold text-slate-400 uppercase tracking-widest border-b">
+                        <th class="px-8 compact-th">Maklumat Servis</th>
+                        <th class="px-8 compact-th text-center">Pautan Luar</th>
+                        <th class="px-8 compact-th text-center">Tindakan</th> </tr>
                 </thead>
                 <tbody id="serviceTableBody" class="divide-y divide-slate-100"></tbody>
             </table>
@@ -177,8 +157,7 @@ function renderTable(){
                     <i class="bi bi-link-45deg text-lg"></i> ${hasLinks ? 'Lihat Pautan' : 'Tiada Pautan'}
                 </button>
             </td>
-            <td class="px-8 py-6 text-right">
-                <button onclick="openEditor('${s.idservis}')" class="btn-action-table-large btn-edit">
+            <td class="px-8 py-6 text-center"> <button onclick="openEditor('${s.idservis}')" class="btn-action-table-large btn-edit">
                     <i class="bi bi-pencil-square text-lg"></i> KEMASKINI
                 </button>
             </td>
@@ -187,12 +166,11 @@ function renderTable(){
     });
 }
 
-// 3. Pop-up Editor (Dynamic Title & Side-by-Side Buttons)
+// Editor, Save, Delete functions (Kekal sebahagian besar logic asal)
 function openEditor(id = null) {
     let s = id ? allServis.find(item => String(item.idservis) === String(id)) : null;
-
     Swal.fire({
-        title: id ? 'Kemaskini Perincian' : 'Tambah Perincian', // Tajuk Dinamik
+        title: id ? 'Kemaskini Perincian' : 'Tambah Perincian',
         showCloseButton: true,
         html: `
             <div class="text-left space-y-4 p-2 mt-4">
@@ -213,11 +191,7 @@ function openEditor(id = null) {
         showDenyButton: id ? true : false,
         denyButtonText: 'Padam Servis',
         buttonsStyling: false,
-        customClass: {
-            confirmButton: 'btn-swal-hantar', // Kanan
-            denyButton: 'btn-swal-padam',     // Kiri
-            closeButton: 'swal2-close'
-        },
+        customClass: { confirmButton: 'btn-swal-hantar', denyButton: 'btn-swal-padam', closeButton: 'swal2-close' },
         backdrop: `rgba(15, 23, 42, 0.5) blur(8px)`,
         didOpen: () => {
             ClassicEditor.create(document.querySelector('#swal-description'), {
@@ -235,7 +209,6 @@ function openEditor(id = null) {
     });
 }
 
-// Logic Save & Delete (Kekal Sama)
 async function saveServis(data){
     const fd = new FormData();
     Object.keys(data).forEach(key => fd.append(key, data[key] || ''));
@@ -256,7 +229,6 @@ async function deleteServis(id){
     });
 }
 
-// 4. Pop-up Pautan Luar
 function showLinks(id) {
     const s = allServis.find(item => String(item.idservis) === String(id));
     Swal.fire({
