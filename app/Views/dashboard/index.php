@@ -88,7 +88,7 @@
                 <i class="bi bi-grid-fill text-3xl text-indigo-600"></i>
             </div>
             <div>
-                <h1 class="text-3xl fw-800 text-slate-900 mb-1">Dashboard Utama</h1>
+                <h1 class="text-3xl fw-800 text-slate-900 mb-1">Dashboard</h1>
                 <p class="text-slate-500 font-medium mb-0">Ringkasan status permohonan dan statistik dokumen sistem.</p>
             </div>
         </div>
