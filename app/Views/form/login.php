@@ -12,7 +12,7 @@
     <style>
         :root {
             --brand-color: #4f46e5;
-            --brand-hover: #3730a3; /* Biru gelap bila hover */
+            --brand-hover: #3730a3;
         }
 
         body {
@@ -31,7 +31,6 @@
         /* --- Left Side: Visuals --- */
         .image-section {
             flex: 1;
-            /* Guna base_url() untuk pastikan path betul */
             background: url('<?= base_url('assets/image/dectarUKM.jpg') ?>') center/cover no-repeat;
             position: relative;
             display: flex;
@@ -87,7 +86,6 @@
             letter-spacing: -0.5px;
         }
 
-
         .form-control {
             border: 2px solid #f1f5f9;
             background: #f8fafc;
@@ -135,7 +133,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* --- Responsive --- */
         @media (max-width: 992px) {
             .image-section { display: none; }
             .form-section { width: 100%; padding: 40px; }
@@ -148,7 +145,7 @@
     <div class="image-section">
         <div class="overlay-content">
             <div class="glass-card">
-                <h2 class="fw-extrabold mb-3 text-3xl">Revolusi Digital ICT4U</h2>
+                <h2 class="fw-bolder mb-3 text-3xl" style="font-weight: 800;">Revolusi Digital ICT4U</h2>
                 <p class="mb-0 opacity-90 leading-relaxed font-medium">Satu platform untuk semua keperluan pengurusan sistem anda. Pantas, selamat dan efisien untuk masa hadapan digital.</p>
             </div>
         </div>
@@ -161,11 +158,11 @@
 
         <div class="mb-5">
             <h1 class="section-title">Selamat Kembali</h1>
-            <p class="text-slate-500 font-semibold">Masukkan emel dan kata laluan anda untuk akses.</p>
+            <p class="text-secondary fw-semibold">Masukkan emel dan kata laluan anda untuk akses.</p>
         </div>
 
         <?php if(session()->getFlashdata('error')): ?>
-            <div class="alert alert-danger border-0 rounded-4 small p-3 mb-4 flex align-items-center">
+            <div class="alert alert-danger border-0 rounded-4 small p-3 mb-4 d-flex align-items-center">
                 <i class="bi bi-exclamation-circle-fill me-2"></i> 
                 <strong><?= session()->getFlashdata('error') ?></strong>
             </div>
@@ -175,27 +172,27 @@
             <?= csrf_field() ?>
             
             <div class="mb-4">
-                <label class="form-label small fw-bold text-slate-700 ml-1">Alamat Emel</label>
+                <label class="form-label small fw-bold text-dark ml-1">Alamat Emel</label>
                 <input type="email" name="email" class="form-control" placeholder="nama@syarikat.com" required>
             </div>
 
             <div class="mb-4">
                 <div class="d-flex justify-content-between align-items-center mb-2">
-                    <label class="form-label small fw-bold text-slate-700 m-0">Kata Laluan</label>
-                    <a href="<?= base_url('/forgot-password') ?>" class="small text-decoration-none fw-bold text-indigo-600">Lupa Kata Laluan?</a>
+                    <label class="form-label small fw-bold text-dark m-0">Kata Laluan</label>
+                    <a href="<?= base_url('/forgot-password') ?>" class="small text-decoration-none fw-bold" style="color: var(--brand-color);">Lupa Kata Laluan?</a>
                 </div>
                 <input type="password" name="password" class="form-control" placeholder="••••••••" required>
             </div>
 
             <button type="submit" class="btn btn-login w-100 mb-4">Log Masuk Sekarang</button>
 
-            <p class="text-center small text-slate-500 font-semibold">
-                Belum mempunyai akaun? <a href="<?= base_url('/register') ?>" class="text-indigo-600 fw-bold text-decoration-none hover:underline">Daftar Sekarang</a>
+            <p class="text-center small text-secondary fw-semibold">
+                Belum mempunyai akaun? <a href="<?= base_url('/register') ?>" class="fw-bold text-decoration-none hover:underline" style="color: var(--brand-color);">Daftar Sekarang</a>
             </p>
         </form>
 
         <div class="mt-auto pt-5 text-center">
-            <p class="small text-slate-400 font-bold uppercase tracking-wider">&copy; 2026 ICT4U Management System</p>
+            <p class="small text-muted fw-bold text-uppercase tracking-wider">&copy; 2026 ICT4U Management System</p>
         </div>
     </div>
 </div>
