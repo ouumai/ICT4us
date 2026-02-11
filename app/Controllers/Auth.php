@@ -66,15 +66,20 @@ class Auth extends BaseController
         $user = $model->where('email', $email)->first();
 
         // Pastikan password_verify digunakan
-        if ($user && password_verify($password, $user['password'])) {
-            session()->set([
-                'user_id'     => $user['id'],
-                'fullname'    => $user['fullname'],
-                'email'       => $user['email'],
-                'profile_pic' => $user['profile_pic'], 
-                'isLoggedIn'  => true
-            ]);
-            return redirect()->to('/dashboard');
+        if ($user) 
+            {
+            if (password_verify($password, $user['password'])) 
+                {
+                // Password BETUL - Set Session
+                session()->set([
+                    'user_id'    => $user['id'],
+                    'fullname'   => $user['fullname'],
+                    'email'      => $user['email'],
+                    'isLoggedIn' => true
+                ]);
+                return redirect()->to('/dashboard');
+                }
+
         }
 
         return redirect()->back()->with('error', 'Emel atau kata laluan salah.');
