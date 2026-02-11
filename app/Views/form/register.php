@@ -34,7 +34,7 @@
         /* --- Left Side: Visuals --- */
         .image-section {
             flex: 1;
-            background: url('<?= base_url('assets/image/masjidUKM.jpg') ?>') center/cover no-repeat;
+            background: url('<?= base_url('assets/image/airterjunUKM.jpg') ?>') center/cover no-repeat;
             position: relative;
             display: flex;
             align-items: center;
@@ -135,15 +135,12 @@
             border-radius: 16px;
             font-weight: 700;
             font-size: 1rem;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             margin-top: 10px;
             box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
         }
 
         .btn-register:hover {
             background: var(--brand-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 20px 25px -5px rgba(79, 70, 229, 0.4);
             color: white;
         }
 

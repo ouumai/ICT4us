@@ -191,8 +191,10 @@
             </p>
         </form>
 
-        <div class="mt-auto pt-5 text-center">
-            <p class="small text-muted fw-bold text-uppercase tracking-wider">&copy; 2026 ICT4U Management System</p>
+        <div class="mt-auto pt-4 text-center">
+            <p class="small text-muted fw-bold text-uppercase tracking-wider" style="font-size: 0.7rem;">
+                &copy; 2026 ICT4U Management System
+            </p>
         </div>
     </div>
 </div>
