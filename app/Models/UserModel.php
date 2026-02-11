@@ -9,10 +9,10 @@ class UserModel extends Model
     protected $table            = 'users';
     protected $primaryKey       = 'id';
     
-    // Pastikan list ni selari dengan column DB kau
+    // list of database follow as the column on table users
     protected $allowedFields    = ['fullname', 'email', 'password', 'profile_pic', 'created_at', 'reset_token', 'reset_expires_at'];
     
-    // COMMENT-KAN ATAU BUANG BAHAGIAN NI SUPAYA TAK DOUBLE HASH
+    // double hash
     /*
     protected $beforeInsert = ['hashPassword'];
     protected $beforeUpdate = ['hashPassword'];
