@@ -89,7 +89,7 @@
             </div>
             <div>
                 <h1 class="text-3xl fw-800 text-slate-900 mb-1">Dashboard</h1>
-                <p class="text-slate-500 font-medium mb-0">Ringkasan status permohonan dan statistik dokumen sistem.</p>
+                <p class="text-slate-500 font-medium mb-0">Ringkasan status permohonan dan statistik dokumen sistem</p>
             </div>
         </div>
         
