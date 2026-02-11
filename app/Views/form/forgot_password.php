@@ -29,7 +29,7 @@
         <div class="overlay-content">
             <div class="glass-card">
                 <h2 class="fw-bold mb-3">Kemaskini Segera</h2>
-                <p class="mb-0 opacity-90">Masukkan emel dan kata laluan baharu anda untuk mengemaskini akses akaun secara terus.</p>
+                <p class="mb-0 opacity-90">Masukkan emel dan kata laluan baharu anda untuk mengemaskini akses akaun secara terus</p>
             </div>
         </div>
     </div>
