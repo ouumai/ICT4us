@@ -146,7 +146,7 @@
     <div class="row">
         <div class="col-lg-5">
             <div class="chart-card shadow-sm">
-                <h5 class="fw-800 mb-6 text-dark">Analisis Status Dokumen</h5>
+                <h5 class="fw-800 mb-6 text-dark">Analisis Status Keseluruhan</h5>
                 <div style="height: 250px;">
                     <canvas id="statusChart"></canvas>
                 </div>
