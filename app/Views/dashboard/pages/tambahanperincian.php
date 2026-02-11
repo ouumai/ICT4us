@@ -31,7 +31,7 @@
         border-radius: 1.5rem;
     }
 
-    /* 3. Modern Input & Placeholder (Ikut Rujukan) */
+    /* 3. Modern Input & Placeholder (Match Rujukan) */
     .modern-input-size {
         height: 56px !important;
         border-radius: 14px !important;
@@ -44,7 +44,7 @@
     .input-with-icon { padding-left: 3.5rem !important; }
 
     #searchInput::placeholder {
-        color: #94a3b8 !important; /* Kelabu lembut rujukan */
+        color: #94a3b8 !important;
         font-weight: 600;
         opacity: 1;
     }
@@ -54,11 +54,19 @@
         color: #94a3b8 !important; font-size: 1.2rem; z-index: 10;
     }
 
-    /* 4. Table Header Styling (Kecil & Kemas) */
+    /* 4. Table Header Styling (Match Pengesahan Dokumen) */
     .compact-th {
-        padding-top: 12px !important;
-        padding-bottom: 12px !important;
+        padding-top: 25px !important;
+        padding-bottom: 25px !important;
         background-color: #f8fafc !important; /* bg-slate-50 */
+        border-bottom: 1px solid #e2e8f0;
+        
+        /* Gaya Font Header Rujukan */
+        font-size: 0.75rem !important;      /* text-xs */
+        font-weight: 700 !important;        /* font-bold */
+        text-transform: uppercase !important; /* uppercase */
+        letter-spacing: 0.05em !important;   /* tracking-wider */
+        color: #64748b !important;           /* text-slate-500 */
         white-space: nowrap;
     }
 
@@ -73,16 +81,13 @@
     .btn-edit { background: #EEF2FF; color: #4F46E5; border-color: #E0E7FF; }
     .btn-edit:hover { background: #4F46E5; color: white; }
 
-    /* SweetAlert & Others */
+    /* SweetAlert Custom UI */
     .swal2-actions { width: 100% !important; display: flex !important; flex-direction: row !important; gap: 12px !important; margin-top: 1.5rem !important; padding: 0 1rem !important; }
     .btn-swal-hantar { flex: 1 !important; background: #3b82f6 !important; color: white !important; font-weight: 700 !important; padding: 14px !important; border-radius: 16px !important; border: none !important; font-size: 0.95rem !important; order: 2; }
     .btn-swal-padam { flex: 1 !important; background: #fee2e2 !important; color: #ef4444 !important; font-weight: 700 !important; padding: 14px !important; border-radius: 16px !important; border: none !important; font-size: 0.95rem !important; order: 1; }
     .swal2-popup { border-radius: 28px !important; padding: 2rem !important; }
     .swal-label-custom { display: block; font-size: 0.8rem; font-weight: 700; color: #1e293b; margin-bottom: 8px; }
     .swal-input-custom { height: 52px; border-radius: 12px; border: 1px solid #e2e8f0; padding: 0 15px; width: 100%; background-color: #ffffff; font-weight: 500; font-size: 0.95rem; }
-    .ck-editor__main>.ck-editor__editable { min-height: 200px !important; border-radius: 0 0 12px 12px !important; }
-    .ck.ck-editor__top { border-radius: 12px 12px 0 0 !important; }
-    .text-slate-500 { color: #64748b; }
 </style>
 
 <div class="container-fluid py-4">
@@ -115,9 +120,9 @@
 
     <div class="glass-card overflow-hidden bg-white">
         <div class="overflow-x-auto">
-            <table class="w-full text-left">
+            <table class="w-full text-left" id="dokumenTable">
                 <thead>
-                    <tr class="text-[11px] font-extrabold text-slate-400 uppercase tracking-widest border-b">
+                    <tr class="bg-slate-50">
                         <th class="px-8 compact-th">Maklumat Servis</th>
                         <th class="px-8 compact-th text-center">Pautan Luar</th>
                         <th class="px-8 compact-th text-center">Tindakan</th> </tr>
@@ -166,7 +171,6 @@ function renderTable(){
     });
 }
 
-// Editor, Save, Delete functions (Kekal sebahagian besar logic asal)
 function openEditor(id = null) {
     let s = id ? allServis.find(item => String(item.idservis) === String(id)) : null;
     Swal.fire({
