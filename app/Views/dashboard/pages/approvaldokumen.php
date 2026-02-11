@@ -33,6 +33,24 @@
         padding-right: 2.5rem !important; /* Ruang untuk arrow dropdown */
     }
 
+    /* 1. Warna placeholder (text "Cari tajuk dokumen...") */
+    #searchDokumen::placeholder {
+        color: #94a3b8 !important; /* Warna kelabu lembut (Slate 400) */
+        font-weight: 600;          /* Bold tapi tak terlalu petak */
+        opacity: 1;                /* Wajib untuk Firefox */
+    }
+
+    /* 2. Warna icon kanta pembesar (biar sedondon dengan text) */
+    .bi-search {
+        color: #94a3b8 !important;
+    }
+
+    /* 3. Style masa user tengah menaip */
+    #searchDokumen {
+        color: #475569;            /* Text yang ditaip warna gelap sikit */
+        font-weight: 600;
+    }
+
     /* Status Pills */
     .status-pill { padding: 4px 12px; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; display: inline-block; }
     .status-pending { background-color: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
