@@ -132,7 +132,7 @@
             </div>
             <div>
                 <h1 class="text-3xl font-extrabold text-slate-900 mb-1">Pengurusan FAQ Modul</h1>
-                <p class="text-slate-500 font-medium mb-0">Uruskan soalan lazim mengikut kategori servis sistem</p>
+                <p class="text-gray-500 font-medium mb-0">Uruskan soalan lazim mengikut kategori servis sistem</p>
             </div>
         </div>
         <div id="actionArea" class="hidden mt-4 md:mt-0">
