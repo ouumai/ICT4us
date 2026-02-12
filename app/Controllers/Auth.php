@@ -6,7 +6,7 @@ use App\Models\UserModel;
 
 class Auth extends BaseController
 {
-    // --- 1. AUTHENTICATION METHODS ---
+    //1. REGISTRATION
 
     public function register()
     {
@@ -15,12 +15,11 @@ class Auth extends BaseController
 
     public function attemptRegister()
     {
-        // 1. Rules diupdate: username dibuang sebab takde dalam form
-        // Kita akan auto-generate username guna emel (sebelum @) supaya database tak error
+        // Rules for field that only exist in Table users
         $rules = [
-            'fullname' => 'required|min_length[3]',
-            'email'    => 'required|valid_email|is_unique[users.email]',
-            'password' => 'required|min_length[6]',
+            'fullname'         => 'required|min_length[3]',
+            'email'            => 'required|valid_email|is_unique[users.email]',
+            'password'         => 'required|min_length[8]',
             'confirm_password' => 'matches[password]'
         ];
 
@@ -30,16 +29,12 @@ class Auth extends BaseController
 
         $model = new UserModel();
         
-        // 2. Generate username secara automatik dari emel
-        // Contoh: amirul@gmail.com -> username jadi amirul
-        $email = $this->request->getPost('email');
-        $username = explode('@', $email)[0];
-
-        // 3. Simpan data dengan Password Hash
+        // Simpan data tanpa username
         $data = [
             'fullname' => $this->request->getPost('fullname'),
-            'email'    => $email,
-            'password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT), // Wajib hash!
+            'email'    => $this->request->getPost('email'),
+            // Password dihash di sini (tutup auto-hash kat Model)
+            'password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
         ];
 
         if ($model->save($data)) {
@@ -48,6 +43,8 @@ class Auth extends BaseController
             return redirect()->back()->withInput()->with('error_pw', 'Gagal menyimpan data ke database.');
         }
     }
+
+    // 2. LOG IN 
 
     public function login()
     {
@@ -65,29 +62,24 @@ class Auth extends BaseController
         $model = new UserModel();
         $user = $model->where('email', $email)->first();
 
-        // Pastikan password_verify digunakan
-        if ($user) 
-            {
-            if (password_verify($password, $user['password'])) 
-                {
-                // Password BETUL - Set Session
-                session()->set([
-                    'user_id'    => $user['id'],
-                    'fullname'   => $user['fullname'],
-                    'email'      => $user['email'],
-                    'isLoggedIn' => true
-                ]);
-                return redirect()->to('/dashboard');
-                }
-
+        // Bandingkan password guna password_verify
+        if ($user && password_verify($password, $user['password'])) {
+            session()->set([
+                'user_id'    => $user['id'],
+                'fullname'   => $user['fullname'],
+                'email'      => $user['email'],
+                'isLoggedIn' => true
+            ]);
+            return redirect()->to('/dashboard');
         }
 
         return redirect()->back()->with('error', 'Emel atau kata laluan salah.');
     }
 
+    //3. PROFILE & LOG OUT
+
     public function profile()
     {
-        // Check kalau user tak login, tendang pergi login page
         if (!session()->get('isLoggedIn')) {
             return redirect()->to('/login');
         }
@@ -108,7 +100,6 @@ class Auth extends BaseController
     {
         $model = new UserModel();
         $id = session()->get('user_id');
-        $user = $model->find($id);
 
         $rules = [
             'fullname' => 'required|min_length[3]',
@@ -130,9 +121,13 @@ class Auth extends BaseController
         return redirect()->back()->with('success', 'Profil berjaya dikemaskini.');
     }
 
-    /**
-     * Handle the direct password update via Email input
-     */
+    //4. RESET PASSWORD
+
+    public function forgotPassword()
+    {
+        return view('form/forgot_password');
+    }
+
     public function attemptDirectReset()
     {
         $email = $this->request->getPost('email');
@@ -140,28 +135,27 @@ class Auth extends BaseController
 
         $rules = [
             'email'           => 'required|valid_email',
-            'password'        => 'required|min_length[6]',
+            'password'        => 'required|min_length[8]',
             'confirmpassword' => 'required|matches[password]'
         ];
 
         if (!$this->validate($rules)) {
-            return redirect()->back()->withInput()->with('error_pw', 'Pastikan emel sah, kata laluan minima 6 aksara dan sepadan.');
+            return redirect()->back()->withInput()->with('error_pw', 'Pastikan emel sah dan kata laluan sepadan.');
         }
 
         $model = new UserModel();
         $user = $model->where('email', $email)->first();
 
         if (!$user) {
-            return redirect()->back()->withInput()->with('error_pw', 'Emel tidak dijumpai dalam sistem.');
+            return redirect()->back()->withInput()->with('error_pw', 'Emel tidak dijumpai.');
         }
 
-        // Update dengan password_hash
         $model->update($user['id'], [
             'password'         => password_hash($password, PASSWORD_DEFAULT), 
             'reset_token'      => null,
             'reset_expires_at' => null
         ]);
 
-        return redirect()->to('/login')->with('success', 'Kata laluan berjaya ditukar. Sila log masuk.');
+        return redirect()->to('/login')->with('success', 'Kata laluan berjaya ditukar.');
     }
 }
