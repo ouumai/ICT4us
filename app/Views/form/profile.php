@@ -68,16 +68,21 @@
                     
                     <div class="avatar-wrapper">
                         <div class="avatar-box" id="imagePreview">
-                            <?php 
-                                $picName = session()->get('profile_pic') ?: $user['profile_pic'];
-                                $fullPath = WRITEPATH . 'uploads/profile/' . $picName;
-                                if (!empty($picName) && file_exists($fullPath)): 
-                            ?>
-                                <img src="<?= base_url('get-profile-pic/' . $picName) ?>?t=<?= time() ?>" alt="Profile">
-                            <?php else: ?>
-                                <span class="text-uppercase"><?= substr(session()->get('fullname') ?? $user['fullname'], 0, 1) ?></span>
-                            <?php endif; ?>
-                        </div>
+                        <?php 
+                            // 1. Ambil nama fail dari database
+                            $picName = $user['profile_pic'];
+                            
+                            // 2. Tentukan laluan fizikal fail kat folder public guna FCPATH
+                            $filePath = FCPATH . 'uploads/profile/' . $picName;
+                            
+                            // 3. Syarat: Mesti ada nama fail DAN fail tu wujud kat folder public
+                            if (!empty($picName) && is_file($filePath)): 
+                        ?>
+                            <img src="<?= base_url('uploads/profile/' . $picName) ?>?t=<?= time() ?>" alt="Profile">
+                        <?php else: ?>
+                            <span class="text-uppercase"><?= substr($user['fullname'], 0, 1) ?></span>
+                        <?php endif; ?>
+                    </div>
                         <label for="profile_pic" class="upload-badge">
                             <i class="bi bi-camera-fill"></i>
                             <input type="file" name="profile_pic" id="profile_pic" class="d-none" accept="image/png, image/jpeg, image/jpg">

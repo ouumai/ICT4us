@@ -96,29 +96,43 @@ class Auth extends BaseController
         return redirect()->to('/login');
     }
 
-    public function updateProfile()
+        public function updateProfile()
     {
         $model = new UserModel();
         $id = session()->get('user_id');
+        $user = $model->find($id);
 
-        $rules = [
-            'fullname' => 'required|min_length[3]',
-            'email'    => "required|valid_email|is_unique[users.email,id,$id]",
-        ];
+        // 1. Tangkap fail dari form
+        $file = $this->request->getFile('profile_pic');
+        $picName = $user['profile_pic']; // Ambil nama sedia ada
 
-        if (!$this->validate($rules)) {
-            return redirect()->back()->withInput()->with('error_pw', 'Input tidak sah.');
+        if ($file && $file->isValid() && !$file->hasMoved()) {
+            $picName = $file->getRandomName(); // unique name
+
+            $file->move(FCPATH . 'uploads/profile/', $picName);
+            session()->set('profile_pic', $picName); // Update session
         }
 
         $data = [
-            'fullname' => $this->request->getPost('fullname'),
-            'email'    => $this->request->getPost('email'),
+            'fullname'    => $this->request->getPost('fullname'),
+            'email'       => $this->request->getPost('email'),
+            'profile_pic' => $picName,
         ];
 
         $model->update($id, $data);
         session()->set('fullname', $data['fullname']);
 
         return redirect()->back()->with('success', 'Profil berjaya dikemaskini.');
+    }
+
+    public function getProfilePic($filename)
+    {
+        $path = WRITEPATH . 'uploads/profile/' . $filename;
+        if (!file_exists($path)) return null;
+
+        $file = new \CodeIgniter\Files\File($path);
+        $binary = readfile($path);
+        return $this->response->setHeader('Content-Type', $file->getMimeType())->setBody($binary);
     }
 
     //4. RESET PASSWORD (DIRECT)

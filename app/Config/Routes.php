@@ -32,7 +32,6 @@ $routes->group('perincianmodul', ['namespace' => 'App\Controllers'], function($r
 // Tambahan Perincian Modul
 // --------------------------------------------------------------------
 $routes->group('dashboard', ['namespace' => 'App\Controllers'], function ($routes) {
-
     // MAIN PAGE
     $routes->get('TambahanPerincian', 'TambahanPerincianController::index');
 
@@ -45,55 +44,27 @@ $routes->group('dashboard', ['namespace' => 'App\Controllers'], function ($route
 
 // --------------------------------------------------------------------
 // Dokumen Management
-        $routes->group('dokumen', ['namespace' => 'App\Controllers'], function($routes) {
-            // Paparan utama dan senarai data
-            $routes->get('/', 'DokumenController::index');
-            $routes->get('getDokumen/(:num)', 'DokumenController::getDokumen/$1');
-            
-            // Operasi CRUD
-            $routes->post('tambah', 'DokumenController::tambah');
-            $routes->get('edit/(:num)', 'DokumenController::edit/$1');
-            $routes->post('kemaskini/(:num)', 'DokumenController::kemaskini/$1');
-            
-            // Fungsi Padam (Penting untuk AJAX hapusDokumen)
-            $routes->post('hapus/(:num)', 'DokumenController::hapus/$1');
-            
-            // Fungsi Paparan Fail (Penting untuk URL /viewFile/id/namafail)
-            $routes->get('viewFile/(:num)/(:any)', 'DokumenController::viewFile/$1/$2');
-
-            
-            // Tukar kepada hapus kekal (Permanent Delete)
-            $routes->post('hapus/(:num)', 'DokumenController::hapus/$1');
-
-            // Route untuk paparan fail
-            $routes->get('viewFile/(:num)/(:any)', 'DokumenController::viewFile/$1/$2');
-        });
+$routes->group('dokumen', ['namespace' => 'App\Controllers'], function($routes) {
+    $routes->get('/', 'DokumenController::index');
+    $routes->get('getDokumen/(:num)', 'DokumenController::getDokumen/$1');
+    $routes->post('tambah', 'DokumenController::tambah');
+    $routes->get('edit/(:num)', 'DokumenController::edit/$1');
+    $routes->post('kemaskini/(:num)', 'DokumenController::kemaskini/$1');
+    $routes->post('hapus/(:num)', 'DokumenController::hapus/$1');
+    $routes->get('viewFile/(:num)/(:any)', 'DokumenController::viewFile/$1/$2');
+});
 
 // --------------------------------------------------------------------
 // Approval Dokumen Management
 // --------------------------------------------------------------------
 $routes->group('approvaldokumen', ['namespace' => 'App\Controllers'], function($routes) {
-
-    // ============================================================
-    // PAGE / VIEWS
-    // ============================================================
-
-    // Halaman utama Approval Dokumen
     $routes->get('/', 'ApprovalDokumenController::index');
-
-    // AJAX: fetch all dokumen (with pagination & status filter)
     $routes->get('getAll', 'ApprovalDokumenController::getAll');
-
-    // AJAX: fetch single dokumen details
     $routes->get('getDokumen/(:num)', 'ApprovalDokumenController::getDokumen/$1');
-
-    // AJAX: approve or reject dokumen
     $routes->post('changeStatus/(:num)/(:any)', 'ApprovalDokumenController::changeStatus/$1/$2');
-    
-    // AJAX: view dokumen file
     $routes->get('viewFile/(:num)/(:any)', 'ApprovalDokumenController::viewFile/$1/$2');
-   
 });
+
 // --------------------------------------------------------------------
 // User Management
 // --------------------------------------------------------------------
@@ -106,24 +77,22 @@ $routes->group('users', ['namespace' => 'App\Controllers'], function($routes){
     $routes->post('delete/(:num)', 'UserController::delete/$1');
 });
 
-
-// --- Authentication ---
+// --------------------------------------------------------------------
+// Authentication & Profile Management
+// --------------------------------------------------------------------
 $routes->get('register', '\App\Controllers\Auth::register');
 $routes->post('register', '\App\Controllers\Auth::attemptRegister');
 $routes->get('login', '\App\Controllers\Auth::login');
 $routes->post('login', '\App\Controllers\Auth::attemptLogin');
 $routes->get('logout', '\App\Controllers\Auth::logout');
 
-// --- Profile Management ---
 $routes->get('profile', '\App\Controllers\Auth::profile');
 $routes->post('profile/update', '\App\Controllers\Auth::updateProfile');
 $routes->post('profile/update-password', '\App\Controllers\Auth::updatePassword');
-$routes->get('get-profile-pic/(:any)', '\App\Controllers\Auth::getFile/$1');
 $routes->get('profile/delete-pic', '\App\Controllers\Auth::deleteProfilePic');
 
 // --- Direct Password Reset (Tiada Emel) ---
 $routes->get('forgot-password', '\App\Controllers\Auth::forgotPassword');
-// Route di bawah akan memproses pertukaran password terus dari borang
 $routes->post('forgot-password', '\App\Controllers\Auth::attemptDirectReset');
 
 // --------------------------------------------------------------------
@@ -142,14 +111,12 @@ $routes->group('serviskelulusan', ['namespace' => 'App\Controllers\Servis'], fun
 $routes->group('', ['namespace' => 'App\Controllers\Frontend'], function($routes) {
     $routes->get('dashboard', 'DashboardController::index');
 
-    // Perincian
     $routes->group('perincian', function($routes) {
         $routes->get('/', 'PerincianController::index');
         $routes->get('getServis/(:num)', 'PerincianController::getServis/$1');
         $routes->post('save', 'PerincianController::save');
     });
 
-    // Dokumen Pengurusan
     $routes->group('pengurusan', function($routes) {
         $routes->get('/', 'DokumenPengurusanController::index');
         $routes->get('getDokumen/(:num)', 'DokumenPengurusanController::getDokumen/$1');
@@ -160,23 +127,16 @@ $routes->group('', ['namespace' => 'App\Controllers\Frontend'], function($routes
     });
 });
 
+// --------------------------------------------------------------------
+// FAQ Management
+// --------------------------------------------------------------------
 $routes->group('faq', function($routes){
-    // Paparan utama FAQ
-    $routes->get('', 'FaqController::index');             // index tanpa parameter
-    $routes->get('(:num)', 'FaqController::index/$1');   // optional: index ikut servis ID (boleh remove kalau tak guna)
-    
-    // Create FAQ
-    $routes->get('create/(:num)', 'FaqController::create/$1'); // form create untuk servis tertentu
-    $routes->post('store', 'FaqController::store');             // simpan FAQ baru
-
-    // Edit / Update FAQ
-    $routes->get('edit/(:num)', 'FaqController::edit/$1');     // form edit
-    $routes->post('update/(:num)', 'FaqController::update/$1'); // kemaskini FAQ
-
-    // Delete FAQ via POST
+    $routes->get('', 'FaqController::index');
+    $routes->get('(:num)', 'FaqController::index/$1');
+    $routes->get('create/(:num)', 'FaqController::create/$1');
+    $routes->post('store', 'FaqController::store');
+    $routes->get('edit/(:num)', 'FaqController::edit/$1');
+    $routes->post('update/(:num)', 'FaqController::update/$1');
     $routes->delete('delete/(:num)', 'FaqController::delete/$1');
-
-    // AJAX untuk fetch FAQ
     $routes->get('ajax/(:num)', 'FaqController::ajax/$1');
 });
-
