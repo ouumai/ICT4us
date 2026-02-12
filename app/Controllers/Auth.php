@@ -159,35 +159,36 @@ class Auth extends BaseController
         return redirect()->to('/login')->with('success', 'Kata laluan berjaya ditukar.');
     }
 
-    //5. UPDATE PASSWORD (DARI PROFILE)
-    
+    //5. UPDATE PASSWORD
     public function updatePassword()
     {
-        // 1. Check login
         if (!session()->get('isLoggedIn')) {
             return redirect()->to('/login');
         }
 
-        // 2. Set rules
+        $model = new UserModel();
+        // 1. Tarik latest user data guna ID dalam session
+        $user = $model->find(session()->get('user_id'));
+
+        // 2. Ambil password lama yang user taip kat form
+        $currentPassInput = $this->request->getPost('current_password');
+
+        // 3. VERIFIKASI: Kalau tak sepadan, halang terus!
+        if (!password_verify($currentPassInput, $user['password'])) {
+            return redirect()->back()->with('error', 'Kata laluan semasa anda salah! Sila cuba lagi.');
+        }
+
+        // 4. Validation: Check password baru
         $rules = [
-            'current_password' => 'required',
             'new_password'     => 'required|min_length[8]',
             'confirm_password' => 'required|matches[new_password]'
         ];
 
         if (!$this->validate($rules)) {
-            return redirect()->back()->with('error', 'Pastikan kata laluan minima 8 aksara dan sepadan.');
+            return redirect()->back()->with('error', 'Pastikan password baru minima 8 aksara & sepadan.');
         }
 
-        $model = new UserModel();
-        $user  = $model->find(session()->get('user_id'));
-
-        // 3. Verify old password
-        if (!password_verify($this->request->getPost('current_password'), $user['password'])) {
-            return redirect()->back()->with('error', 'Kata laluan semasa anda salah.');
-        }
-
-        // 4. Update new password (hashing)
+        // 5. UPDATE: Simpan hash baru
         $model->update($user['id'], [
             'password' => password_hash($this->request->getPost('new_password'), PASSWORD_DEFAULT)
         ]);
