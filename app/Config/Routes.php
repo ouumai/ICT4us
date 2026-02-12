@@ -108,28 +108,23 @@ $routes->group('users', ['namespace' => 'App\Controllers'], function($routes){
 
 
 // --- Authentication ---
-// Paksa dia guna namespace App\Controllers supaya dia jumpa Auth.php
-$routes->group('', ['namespace' => 'App\Controllers'], function($routes) 
-{
-    $routes->get('register', 'Auth::register');
-    $routes->post('register', 'Auth::attemptRegister');
-    $routes->get('login', 'Auth::login');
-    $routes->post('login', 'Auth::attemptLogin');
-    $routes->get('logout', 'Auth::logout');
+$routes->get('register', '\App\Controllers\Auth::register');
+$routes->post('register', '\App\Controllers\Auth::attemptRegister');
+$routes->get('login', '\App\Controllers\Auth::login');
+$routes->post('login', '\App\Controllers\Auth::attemptLogin');
+$routes->get('logout', '\App\Controllers\Auth::logout');
 
-    // --- Profile Management ---
-    $routes->get('profile', 'Auth::profile');
-    $routes->post('profile/update', 'Auth::updateProfile');
-    $routes->post('profile/update-password', 'Auth::updatePassword');
-    $routes->get('get-profile-pic/(:any)', 'Auth::getFile/$1');
-    $routes->get('profile/delete-pic', 'Auth::deleteProfilePic');
+// --- Profile Management ---
+$routes->get('profile', '\App\Controllers\Auth::profile');
+$routes->post('profile/update', '\App\Controllers\Auth::updateProfile');
+$routes->post('profile/update-password', 'A\App\Controllers\uth::updatePassword');
+$routes->get('get-profile-pic/(:any)', '\App\Controllers\Auth::getFile/$1');
+$routes->get('profile/delete-pic', '\App\Controllers\Auth::deleteProfilePic');
 
-    // --- Direct Password Reset (Tiada Emel) ---
-    $routes->get('forgot-password', 'Auth::forgotPassword');
-    // Route di bawah akan memproses pertukaran password terus dari borang
-    $routes->post('forgot-password', 'Auth::attemptDirectReset');
-
-});
+// --- Direct Password Reset (Tiada Emel) ---
+$routes->get('forgot-password', '\App\Controllers\Auth::forgotPassword');
+// Route di bawah akan memproses pertukaran password terus dari borang
+$routes->post('forgot-password', '\App\Controllers\Auth::attemptDirectReset');
 
 // --------------------------------------------------------------------
 // Servis Kelulusan
