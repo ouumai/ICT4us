@@ -181,7 +181,7 @@
                     <label class="form-label small fw-bold text-dark m-0">Kata Laluan</label>
                     <a href="<?= base_url('/forgot-password') ?>" class="small text-decoration-none fw-bold" style="color: var(--brand-color);">Lupa Kata Laluan?</a>
                 </div>
-                <input type="password" name="password" class="form-control" placeholder="••••••••" required>
+                <input type="password" name="password" class="form-control" placeholder="minimum 8 aksara" required>
             </div>
 
             <button type="submit" class="btn btn-login w-100 mb-4">Log Masuk Sekarang</button>
