@@ -158,4 +158,39 @@ class Auth extends BaseController
 
         return redirect()->to('/login')->with('success', 'Kata laluan berjaya ditukar.');
     }
+
+    //5. UPDATE PASSWORD
+    public function updatePassword()
+    {
+        // 1. Check login
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/login');
+        }
+
+        // 2. Set rules
+        $rules = [
+            'current_password' => 'required',
+            'new_password'     => 'required|min_length[8]',
+            'confirm_password' => 'required|matches[new_password]'
+        ];
+
+        if (!$this->validate($rules)) {
+            return redirect()->back()->with('error', 'Pastikan kata laluan minima 8 aksara dan sepadan.');
+        }
+
+        $model = new UserModel();
+        $user  = $model->find(session()->get('user_id'));
+
+        // 3. Verify old password
+        if (!password_verify($this->request->getPost('current_password'), $user['password'])) {
+            return redirect()->back()->with('error', 'Kata laluan semasa anda salah.');
+        }
+
+        // 4.update new password (hashing)
+        $model->update($user['id'], [
+            'password' => password_hash($this->request->getPost('new_password'), PASSWORD_DEFAULT)
+        ]);
+
+        return redirect()->back()->with('success', 'Kata laluan berjaya dikemaskini.');
+    }
 }
