@@ -122,7 +122,7 @@
                         <div class="col-md-4">
                             <label class="form-label fw-bold small text-slate-600">Kata Laluan Lama</label>
                             <div class="input-group">
-                                <input type="password" name="old_password" class="form-control modern-input" id="old_pw" required>
+                                <input type="password" name="current_password" class="form-control modern-input" id="old_pw" required>
                                 <button class="btn toggle-password border-2 border-start-0 bg-light" type="button" data-target="old_pw"><i class="bi bi-eye"></i></button>
                             </div>
                         </div>
@@ -136,7 +136,7 @@
                         <div class="col-md-4">
                             <label class="form-label fw-bold small text-slate-600">Sahkan Kata Laluan</label>
                             <div class="input-group">
-                                <input type="password" name="conf_password" class="form-control modern-input" id="conf_pw" required>
+                                <input type="password" name="confirm_password" class="form-control modern-input" id="conf_pw" required>
                                 <button class="btn toggle-password border-2 border-start-0 bg-light" type="button" data-target="conf_pw"><i class="bi bi-eye"></i></button>
                             </div>
                         </div>
