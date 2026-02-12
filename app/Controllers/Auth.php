@@ -20,7 +20,7 @@ class Auth extends BaseController
             'fullname'         => 'required|min_length[3]',
             'email'            => 'required|valid_email|is_unique[users.email]',
             'password'         => 'required|min_length[8]',
-            'confirm_password' => 'matches[password]'
+            'confirm_password' => 'required|matches[password]'
         ];
 
         if (!$this->validate($rules)) {
@@ -33,8 +33,8 @@ class Auth extends BaseController
         $data = [
             'fullname' => $this->request->getPost('fullname'),
             'email'    => $this->request->getPost('email'),
-            // Password dihash di sini (tutup auto-hash kat Model)
-            'password' => password_hash($this->request->getPost('new_password'), PASSWORD_DEFAULT),
+            // Password dihash guna input 'password' yang betul
+            'password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
         ];
 
         if ($model->save($data)) {
@@ -121,7 +121,7 @@ class Auth extends BaseController
         return redirect()->back()->with('success', 'Profil berjaya dikemaskini.');
     }
 
-    //4. RESET PASSWORD
+    //4. RESET PASSWORD (DIRECT)
 
     public function forgotPassword()
     {
@@ -159,7 +159,8 @@ class Auth extends BaseController
         return redirect()->to('/login')->with('success', 'Kata laluan berjaya ditukar.');
     }
 
-    //5. UPDATE PASSWORD
+    //5. UPDATE PASSWORD (DARI PROFILE)
+    
     public function updatePassword()
     {
         // 1. Check login
@@ -186,7 +187,7 @@ class Auth extends BaseController
             return redirect()->back()->with('error', 'Kata laluan semasa anda salah.');
         }
 
-        // 4.update new password (hashing)
+        // 4. Update new password (hashing)
         $model->update($user['id'], [
             'password' => password_hash($this->request->getPost('new_password'), PASSWORD_DEFAULT)
         ]);
