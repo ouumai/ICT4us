@@ -85,7 +85,50 @@ class Auth extends BaseController
         return redirect()->back()->with('error', 'Emel atau kata laluan salah.');
     }
 
-    // ... (Logout dan Profile methods dikekalkan) ...
+    public function profile()
+    {
+        // Check kalau user tak login, tendang pergi login page
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/login');
+        }
+
+        $model = new UserModel();
+        $data['user'] = $model->find(session()->get('user_id'));
+
+        return view('form/profile', $data);
+    }
+
+    public function logout()
+    {
+        session()->destroy();
+        return redirect()->to('/login');
+    }
+
+    public function updateProfile()
+    {
+        $model = new UserModel();
+        $id = session()->get('user_id');
+        $user = $model->find($id);
+
+        $rules = [
+            'fullname' => 'required|min_length[3]',
+            'email'    => "required|valid_email|is_unique[users.email,id,$id]",
+        ];
+
+        if (!$this->validate($rules)) {
+            return redirect()->back()->withInput()->with('error_pw', 'Input tidak sah.');
+        }
+
+        $data = [
+            'fullname' => $this->request->getPost('fullname'),
+            'email'    => $this->request->getPost('email'),
+        ];
+
+        $model->update($id, $data);
+        session()->set('fullname', $data['fullname']);
+
+        return redirect()->back()->with('success', 'Profil berjaya dikemaskini.');
+    }
 
     /**
      * Handle the direct password update via Email input
