@@ -173,9 +173,9 @@ class Auth extends BaseController
         // 2. Ambil password lama yang user taip kat form
         $currentPassInput = $this->request->getPost('current_password');
 
-        // 3. VERIFIKASI: Kalau tak sepadan, halang terus!
+        // 3. Verification: Tukar kepada 'error_pw' supaya keluar SweetAlert kat profile.php
         if (!password_verify($currentPassInput, $user['password'])) {
-            return redirect()->back()->with('error', 'Kata laluan semasa anda salah! Sila cuba lagi.');
+            return redirect()->back()->with('error_pw', 'Kata laluan semasa anda salah! Sila cuba lagi.');
         }
 
         // 4. Validation: Check password baru
@@ -185,7 +185,7 @@ class Auth extends BaseController
         ];
 
         if (!$this->validate($rules)) {
-            return redirect()->back()->with('error', 'Pastikan password baru minima 8 aksara & sepadan.');
+            return redirect()->back()->with('error_pw', 'Pastikan password baru minima 8 aksara & sepadan.');
         }
 
         // 5. UPDATE: Simpan hash baru
