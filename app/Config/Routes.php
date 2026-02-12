@@ -117,7 +117,7 @@ $routes->get('logout', '\App\Controllers\Auth::logout');
 // --- Profile Management ---
 $routes->get('profile', '\App\Controllers\Auth::profile');
 $routes->post('profile/update', '\App\Controllers\Auth::updateProfile');
-$routes->post('profile/update-password', '\App\Controllers\uth::updatePassword');
+$routes->post('profile/update-password', '\App\Controllers\Auth::updatePassword');
 $routes->get('get-profile-pic/(:any)', '\App\Controllers\Auth::getFile/$1');
 $routes->get('profile/delete-pic', '\App\Controllers\Auth::deleteProfilePic');
 
