@@ -34,7 +34,7 @@ class Auth extends BaseController
             'fullname' => $this->request->getPost('fullname'),
             'email'    => $this->request->getPost('email'),
             // Password dihash di sini (tutup auto-hash kat Model)
-            'password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
+            'password' => password_hash($this->request->getPost('new_password'), PASSWORD_DEFAULT),
         ];
 
         if ($model->save($data)) {
