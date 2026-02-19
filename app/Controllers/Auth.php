@@ -156,7 +156,7 @@ class Auth extends BaseController
         $user = $model->where('email', $email)->first();
 
         if ($user) {
-        // 1. Generate 6-digit token rawak
+        // 1. Generate 6-digit token random
         $token = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
         
         // 2. Simpan dalam session (untuk check kat Step 2 nanti)
@@ -195,7 +195,7 @@ class Auth extends BaseController
 
     public function forgotStep2()
     {
-        // Pastikan user dah lalu Step 1. Kalau terus ke Step 2, kita tendang balik ke step 1.
+        // Pastikan user dah lalu Step 1. Kalau terus ke Step 2, tendang balik ke step 1.
         if (!session()->get('reset_email')) {
             return redirect()->to('forgot/step1');
         }

@@ -1,6 +1,4 @@
-<?= $this->extend('layout/main') ?>
-
-<?= $this->section('content') ?>
+ 
 
 <script>document.title = "My Profile";</script>
 
