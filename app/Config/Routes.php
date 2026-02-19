@@ -95,6 +95,22 @@ $routes->get('profile/delete-pic', '\App\Controllers\Auth::deleteProfilePic');
 $routes->get('forgot-password', '\App\Controllers\Auth::forgotPassword');
 $routes->post('forgot-password', '\App\Controllers\Auth::attemptDirectReset');
 
+// --- Forgot Password (3 Step) ---
+$routes->group('forgot', ['namespace' => 'App\Controllers'], function($routes)
+{
+    //Step 1: Masukkan email
+    $routes->get('step1', 'Auth::forgotStep1');
+    $routes->post('step1', 'Auth::processStep1');
+
+    //Step 2: Hantar or sahkan kod
+    $routes->get('step2', 'Auth::forgotStep2');
+    $routes->post('step2', 'Auth::processStep2');
+
+    //Step 3: Reset password
+    $routes->get('step3', 'Auth::forgotStep3');
+    $routes->post('step3', 'Auth::processStep3');
+});
+
 // --------------------------------------------------------------------
 // Servis Kelulusan
 // --------------------------------------------------------------------
