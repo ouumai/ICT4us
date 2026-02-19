@@ -155,15 +155,42 @@ class Auth extends BaseController
         $model = new UserModel();
         $user = $model->where('email', $email)->first();
 
-        if (!$user) {
-            return redirect()->back()->withInput()->with('error', 'Emel tidak dijumpai dalam sistem.');
+        if ($user) {
+        // 1. Generate 6-digit token rawak
+        $token = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
+        
+        // 2. Simpan dalam session (untuk check kat Step 2 nanti)
+        session()->set([
+            'reset_email' => $email,
+            'reset_token' => $token
+        ]);
+
+        // 3. Hantar Emel guna Library CodeIgniter 4
+        $emailService = \Config\Services::email();
+
+        $emailService->setFrom('n.umairahsabri@gmail.com', 'ICT4U Management System');
+
+        $emailService->setTo($email);
+        $emailService->setSubject('Kod Pengesahan ICT4U');
+        $emailService->setMessage("
+            <div style='font-family: Arial; padding: 20px; border: 1px solid #eee;'>
+                <h2>Sistem ICT4U</h2>
+                <p>Sila gunakan kod di bawah untuk set semula kata laluan anda:</p>
+                <h1 style='color: #4f46e5; letter-spacing: 5px;'>$token</h1>
+                <p>Kod ini hanya sah untuk sementara waktu.</p>
+            </div>
+        ");
+
+        if ($emailService->send()) {
+            return redirect()->to('/forgot/step2')->with('success', 'Kod pengesahan telah dihantar ke emel anda.');
+        } else {
+            // Kalau SMTP error, nampak kat sini
+            return redirect()->back()->with('error', 'Gagal menghantar emel. Sila cuba lagi.');
         }
+    }
 
-        // 2. Simpan emel dalam session supaya Step 2 kenal user
-        session()->set('reset_email', $email);
-
-        // 3. Terus ke Page 2 (Check Emel)
-        return redirect()->to('forgot/step2');
+    return redirect()->back()->with('error', 'Emel tidak dijumpai dalam sistem.');
+        
     }
 
     public function forgotStep2()
@@ -177,14 +204,15 @@ class Auth extends BaseController
 
     public function processStep2()
     {
-        $token = $this->request->getPost('token');
+        $inputToken = $this->request->getPost('token');
+        $sessionToken = session()->get('reset_token');
 
-        // "hardcode" kod 123456 dulu untuk test
-        if ($token === '123456') {
-            return redirect()->to('forgot/step3');
+        if ($inputToken === $sessionToken) {
+            session()->set('token_verified', true);
+            return redirect()->to('/forgot/step3');
         }
 
-        return redirect()->back()->with('error', 'Token salah! Sila check emel anda.');
+        return redirect()->back()->with('error', 'Kod pengesahan salah.');
     }
 
    public function forgotStep3()
