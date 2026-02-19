@@ -142,6 +142,21 @@ class Auth extends BaseController
         return view('form/forgot_password');
     }
 
+    public function forgotStep1()
+    {
+        return view('auth/forgot_step1'); // file buat kemudian
+    }
+
+    public function forgotStep2()
+    {
+        return view('auth/forgot_step2'); // file buat kemudian
+    }
+
+    public function forgotStep3()
+    {
+        return view('auth/forgot_step3'); // file buat kemudian
+    }
+
     public function attemptDirectReset()
     {
         $email = $this->request->getPost('email');
