@@ -143,7 +143,6 @@
         .btn-action:hover {
             background: var(--brand-hover);
             color: white;
-            transform: translateY(-1px);
         }
 
         .back-link {
