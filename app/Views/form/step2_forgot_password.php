@@ -155,6 +155,30 @@
             text-decoration: none;
         }
 
+        /* Progress Bar Container */
+        .progress-stepper {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 35px;
+        }
+
+        /* Base Style for each step */
+        .step-bar {
+            flex: 1;
+            height: 6px;
+            border-radius: 20px;
+            background: #f1f5f9; /* Warna kelabu (Inactive) */
+            transition: all 0.5s ease;
+            position: relative;
+        }
+
+        /* Active Style */
+        .step-bar.active {
+            background: var(--brand-color);
+            box-shadow: 0 0 12px rgba(79, 70, 229, 0.3);
+        }
+
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
@@ -183,6 +207,11 @@
     <div class="form-section">
         <div class="brand-logo">
             <i class="bi bi-cpu-fill"></i> ICT4U
+        </div>
+
+        <div class="progress-stepper">
+            <div class="step-bar active"></div>
+            <div class="step-bar active"></div> <div class="step-bar"></div>
         </div>
 
         <div>
