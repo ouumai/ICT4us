@@ -147,14 +147,76 @@ class Auth extends BaseController
         return view('form/step1_forgot_password'); // file buat kemudian
     }
 
-    public function forgotStep2()
+    public function processStep1()
     {
-        return view('form/step2_forgot_password'); // file buat kemudian
+        $email = $this->request->getPost('email');
+
+        // 1. Check kalau emel wujud dalam database
+        $model = new UserModel();
+        $user = $model->where('email', $email)->first();
+
+        if (!$user) {
+            return redirect()->back()->withInput()->with('error', 'Emel tidak dijumpai dalam sistem.');
+        }
+
+        // 2. Simpan emel dalam session supaya Step 2 kenal user
+        session()->set('reset_email', $email);
+
+        // 3. Terus ke Page 2 (Check Emel)
+        return redirect()->to('forgot/step2');
     }
 
-    public function forgotStep3()
+    public function forgotStep2()
     {
-        return view('form/step3_forgot_password'); // file buat kemudian
+        // Pastikan user dah lalu Step 1. Kalau terus ke Step 2, kita tendang balik ke step 1.
+        if (!session()->get('reset_email')) {
+            return redirect()->to('forgot/step1');
+        }
+        return view('form/step2_forgot_password');
+    }
+
+    public function processStep2()
+    {
+        $token = $this->request->getPost('token');
+
+        // "hardcode" kod 123456 dulu untuk test
+        if ($token === '123456') {
+            return redirect()->to('forgot/step3');
+        }
+
+        return redirect()->back()->with('error', 'Token salah! Sila check emel anda.');
+    }
+
+   public function forgotStep3()
+    {
+        if (!session()->get('reset_email')) {
+            return redirect()->to('forgot/step1');
+        }
+        return view('form/step3_forgot_password');
+    }
+
+    public function processStep3()
+    {
+        $email = session()->get('reset_email');
+        $password = $this->request->getPost('password');
+        $confirm = $this->request->getPost('confirmpassword');
+
+        if ($password !== $confirm) {
+            return redirect()->back()->with('error', 'Kata laluan tidak sepadan.');
+        }
+
+        // Update password baru dalam database
+        $model = new UserModel();
+        $user = $model->where('email', $email)->first();
+
+        $model->update($user['id'], [
+            'password' => password_hash($password, PASSWORD_DEFAULT)
+        ]);
+
+        // Clear session supaya link reset tak boleh guna lagi
+        session()->remove('reset_email');
+
+        return redirect()->to('/login')->with('success', 'Kata laluan berjaya ditukar. Sila log masuk.');
     }
 
     public function attemptDirectReset()
