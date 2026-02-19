@@ -179,7 +179,7 @@
             <div class="mb-4">
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <label class="form-label small fw-bold text-dark m-0">Kata Laluan</label>
-                    <a href="<?= base_url('/forgot-password') ?>" class="small text-decoration-none fw-bold" style="color: var(--brand-color);">Lupa Kata Laluan?</a>
+                    <a href="<?= base_url('forgot/step1') ?>" class="small text-decoration-none fw-bold" style="color: var(--brand-color);">Lupa Kata Laluan?</a>
                 </div>
                 <input type="password" name="password" class="form-control" placeholder="minimum 8 aksara" required>
             </div>

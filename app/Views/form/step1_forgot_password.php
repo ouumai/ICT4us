@@ -146,14 +146,17 @@
             transform: translateY(-1px);
         }
 
-        .back-link {
+        .back-link 
+        {
             color: var(--brand-color);
             font-weight: 700;
-            text-decoration: none;
+            text-decoration: none; 
+            transition: all 0.3s;
         }
 
-        .back-link:hover {
-            text-decoration: underline;
+        .back-link:hover 
+        {
+            text-decoration: none; 
         }
 
         @keyframes fadeIn {

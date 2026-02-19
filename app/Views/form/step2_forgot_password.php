@@ -153,7 +153,7 @@
         }
 
         .back-link:hover {
-            text-decoration: underline;
+            text-decoration: none;
         }
 
         @keyframes fadeIn {
@@ -219,7 +219,7 @@
             <button type="submit" class="btn-action w-100 mb-4">Sahkan Kod</button>
 
             <p class="text-center small text-secondary font-semibold">
-                Tidak menerima emel? <a href="#" class="back-link">Klik di sini</a> untuk hantar semula.
+                Tidak menerima emel? <a href="<?= base_url('forgot/step1') ?>" class="back-link">Klik di sini</a> untuk hantar semula.
             </p>
 
             <p class="text-center mt-3">

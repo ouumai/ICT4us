@@ -197,6 +197,18 @@ class Auth extends BaseController
 
     public function processStep3()
     {
+
+        // 1. Set Rules Validation (Min 8 characters)
+        $rules = [
+            'password'         => 'required|min_length[8]',
+            'confirmpassword'  => 'required|matches[password]'
+        ];
+
+        // 2. Run Validation
+        if (!$this->validate($rules)) {
+            return redirect()->back()->withInput()->with('error', 'Kata laluan mestilah sekurang-kurangnya 8 aksara dan sepadan.');
+        }
+
         $email = session()->get('reset_email');
         $password = $this->request->getPost('password');
         $confirm = $this->request->getPost('confirmpassword');
