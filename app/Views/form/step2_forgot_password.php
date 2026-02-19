@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Set Semula Kata Laluan | ICT4U</title>
+    <title>Set Semula Kata Laluan</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
@@ -187,8 +187,8 @@
         </div>
 
         <div>
-            <h1 class="section-title">Tukar Kata Laluan</h1>
-            <p class="text-subtitle">Sila isi maklumat di bawah untuk set semula.</p>
+            <h1 class="section-title">Pengesahan Identiti</h1>
+            <p class="text-subtitle">Sila semak emel anda dan masukkan kod keselamatan di bawah.</p>
         </div>
 
         <?php if(session()->getFlashdata('error')): ?>
@@ -203,28 +203,29 @@
             </div>
         <?php endif; ?>
 
-        <form action="<?= base_url('/forgot-password') ?>" method="post">
+       <form action="<?= base_url('forgot/step2') ?>" method="post">
             <?= csrf_field() ?>
             
-            <div class="mb-3">
-                <label class="form-label">Alamat Emel</label>
-                <input type="email" name="email" class="form-control" placeholder="nama@syarikat.com" required>
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Kata Laluan Baharu</label>
-                <input type="password" name="password" class="form-control" placeholder="••••••••" required>
-            </div>
-
             <div class="mb-4">
-                <label class="form-label">Sahkan Kata Laluan</label>
-                <input type="password" name="confirmpassword" class="form-control" placeholder="••••••••" required>
+                <label class="form-label d-block text-center">Kod Keselamatan (Token)</label>
+                <input type="text" name="token" 
+                    class="form-control text-center fw-bold" 
+                    placeholder="123456" 
+                    maxlength="6"
+                    style="letter-spacing: 8px; font-size: 1.5rem; height: 60px; border-color: var(--brand-color);" 
+                    required>
             </div>
 
-            <button type="submit" class="btn-action w-100 mb-4">Kemaskini Sekarang</button>
+            <button type="submit" class="btn-action w-100 mb-4">Sahkan Kod</button>
 
             <p class="text-center small text-secondary font-semibold">
-                Batal urusan? <a href="<?= base_url('/login') ?>" class="back-link">Log masuk</a>
+                Tidak menerima emel? <a href="#" class="back-link">Klik di sini</a> untuk hantar semula.
+            </p>
+
+            <p class="text-center mt-3">
+                <a href="<?= base_url('/login') ?>" class="back-link" style="font-size: 0.85rem;">
+                    ← Kembali semula ke Log Masuk
+                </a>
             </p>
         </form>
 
