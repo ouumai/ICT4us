@@ -144,17 +144,17 @@ class Auth extends BaseController
 
     public function forgotStep1()
     {
-        return view('auth/forgot_step1'); // file buat kemudian
+        return view('form/step1_forgot_password'); // file buat kemudian
     }
 
     public function forgotStep2()
     {
-        return view('auth/forgot_step2'); // file buat kemudian
+        return view('form/step2_forgot_password'); // file buat kemudian
     }
 
     public function forgotStep3()
     {
-        return view('auth/forgot_step3'); // file buat kemudian
+        return view('form/step3_forgot_password'); // file buat kemudian
     }
 
     public function attemptDirectReset()

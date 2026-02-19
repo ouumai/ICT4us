@@ -203,28 +203,18 @@
             </div>
         <?php endif; ?>
 
-        <form action="<?= base_url('/forgot-password') ?>" method="post">
-            <?= csrf_field() ?>
+        <form action="<?= base_url('forgot/step1') ?>" method="post">
+             <?= csrf_field() ?>
             
             <div class="mb-3">
                 <label class="form-label">Alamat Emel</label>
                 <input type="email" name="email" class="form-control" placeholder="nama@syarikat.com" required>
             </div>
 
-            <div class="mb-3">
-                <label class="form-label">Kata Laluan Baharu</label>
-                <input type="password" name="password" class="form-control" placeholder="••••••••" required>
-            </div>
-
-            <div class="mb-4">
-                <label class="form-label">Sahkan Kata Laluan</label>
-                <input type="password" name="confirmpassword" class="form-control" placeholder="••••••••" required>
-            </div>
-
-            <button type="submit" class="btn-action w-100 mb-4">Kemaskini Sekarang</button>
+            <button type="submit" class="btn-action w-100 mb-4">Seterusnya</button>
 
             <p class="text-center small text-secondary font-semibold">
-                Batal urusan? <a href="<?= base_url('/login') ?>" class="back-link">Log masuk</a>
+                <a href="<?= base_url('/login') ?>" class="back-link">← Kembali semula ke Log Masuk</a>
             </p>
         </form>
 
