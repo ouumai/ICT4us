@@ -75,6 +75,11 @@
             overflow-y: auto;
         }
 
+        .mb-5
+        {
+            margin-bottom: 0.5rem !important;
+        }
+
         .brand-logo {
             font-weight: 800;
             font-size: 1.75rem;
