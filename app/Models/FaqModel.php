@@ -7,9 +7,17 @@ class FaqModel extends Model
 {
     protected $table = 'faq';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['idservis','question','answer'];
+    protected $allowedFields = 
+    [
+        'idservis',
+        'question',
+        'answer',
+        'is_pinned',
+        'sort_order'
+    ];
 
     protected $useTimestamps = true;
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
+   
 }

@@ -146,71 +146,47 @@ class FaqController extends BaseController
 
     public function store()
     {
-        // 1. Validation Check
         if (!$this->validate($this->getValidationRules())) {
-            return redirect()->back()
-                             ->withInput()
-                             ->with('error', implode('<br>', $this->validator->getErrors()));
+            return redirect()->back()->withInput()->with('error', implode('<br>', $this->validator->getErrors()));
         }
 
-        // 2. Prepare & Sanitize Data
         $data = [
-            'idservis' => $this->request->getPost('idservis'),
-            'question' => strip_tags($this->request->getPost('question')), // Soalan tak perlu HTML
-            'answer'   => $this->cleanInput($this->request->getPost('answer')), // Jawapan perlu HTML bersih
-            'created_at' => date('Y-m-d H:i:s')
+            'idservis'   => $this->request->getPost('idservis'),
+            'question'   => strip_tags($this->request->getPost('question')),
+            'answer'     => $this->cleanInput($this->request->getPost('answer')),
+            'is_pinned'  => $this->request->getPost('is_pinned') ?? 0, // TAMBAH NI
+            'sort_order' => $this->request->getPost('sort_order') ?? 0, // TAMBAH NI
         ];
 
-        // 3. Database Transaction (Safety First)
-        $this->db->transStart();
-        
-        $this->faqModel->insert($data);
-        
-        $this->db->transComplete();
-
-        // 4. Check Status Transaction
-        if ($this->db->transStatus() === false) {
-            return redirect()->back()->withInput()->with('error', 'Ralat Database: Gagal menyimpan data.');
+        if ($this->faqModel->insert($data)) {
+            return redirect()->to('/faq')->with('success', 'FAQ baru berjaya ditambah.');
+        } else {
+            return redirect()->back()->withInput()->with('error', 'Gagal simpan data.');
         }
-
-        // 5. Success   
-        return redirect()->to('/faq')->with('success', 'FAQ baru berjaya ditambah.');
     }
 
-    public function update($id)
+    public function update($id = null)
     {
-        // Semak kewujudan ID dulu
-        if (!$this->faqModel->find($id)) {
-            return redirect()->to('/faq')->with('error', 'Rekod tidak dijumpai.');
+        // 1. Check rekod wujud tak
+        $faq = $this->faqModel->find($id);
+        if (!$faq) {
+            return $this->failNotFound('Rekod tidak dijumpai.');
         }
 
-        // 1. Validation Check
-        if (!$this->validate($this->getValidationRules())) {
-            return redirect()->back()
-                             ->withInput()
-                             ->with('error', implode('<br>', $this->validator->getErrors()));
-        }
-
-        // 2. Prepare & Sanitize Data
+        // 2. Ambil data dari request
+        // Tips: Kita guna data asal kalau input baru kosong
         $data = [
-            'idservis' => $this->request->getPost('idservis'),
-            'question' => strip_tags($this->request->getPost('question')),
-            'answer'   => $this->cleanInput($this->request->getPost('answer')),
-            // updated_at automatik handle oleh CI4 Model jika useTimestamps = true
+            'question' => strip_tags($this->request->getVar('question')),
+            'answer'   => $this->cleanInput($this->request->getVar('answer')),
+            'idservis' => $this->request->getVar('idservis') ?? $faq['idservis'], // Guna ID sedia ada kalau tak hantar
         ];
 
-        // 3. Database Transaction
-        $this->db->transStart();
-        $this->faqModel->update($id, $data);
-        $this->db->transComplete();
-
-        // 4. Check Status Transaction
-        if ($this->db->transStatus() === false) {
-            return redirect()->back()->withInput()->with('error', 'Gagal mengemaskini data.');
+        // 3. Update database
+        if ($this->faqModel->update($id, $data)) {
+            return $this->respond(['success' => true, 'message' => 'FAQ berjaya dikemaskini.']);
+        } else {
+            return $this->fail('Gagal mengemaskini data.');
         }
-
-        // 5. Success
-        return redirect()->to('/faq')->with('success', 'FAQ berjaya dikemaskini.');
     }
 
     // Delete FAQ Record
