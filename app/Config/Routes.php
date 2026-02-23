@@ -40,6 +40,7 @@ $routes->group('dashboard', ['namespace' => 'App\Controllers'], function ($route
     $routes->post('TambahanPerincian/saveServis', 'TambahanPerincianController::saveServis');
     $routes->post('TambahanPerincian/deleteServis', 'TambahanPerincianController::deleteServis');
     $routes->get('TambahanPerincian/getAll', 'TambahanPerincianController::getAll');
+    
 });
 
 // --------------------------------------------------------------------
@@ -145,14 +146,12 @@ $routes->group('', ['namespace' => 'App\Controllers\Frontend'], function($routes
 
 // --------------------------------------------------------------------
 // FAQ Management
-// --------------------------------------------------------------------
-$routes->group('faq', function($routes){
-    $routes->get('', 'FaqController::index');
-    $routes->get('(:num)', 'FaqController::index/$1');
-    $routes->get('create/(:num)', 'FaqController::create/$1');
-    $routes->post('store', 'FaqController::store');
-    $routes->get('edit/(:num)', 'FaqController::edit/$1');
+// -------------------------------------------------------------------
+$routes->group('faq', ['namespace' => 'App\Controllers'], function($routes){
+    $routes->get('/', 'FaqController::index'); 
+    $routes->get('ajax/(:num)', 'FaqController::ajax/$1');
+    $routes->post('save', 'FaqController::save');
     $routes->post('update/(:num)', 'FaqController::update/$1');
     $routes->delete('delete/(:num)', 'FaqController::delete/$1');
-    $routes->get('ajax/(:num)', 'FaqController::ajax/$1');
+    $routes->get('(:any)', 'FaqController::index/$1');
 });
