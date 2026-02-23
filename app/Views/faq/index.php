@@ -191,7 +191,11 @@ $(document).ready(function() {
 
     function loadFaq(id) {
         $('#faqList').html('<div class="text-center py-10 text-slate-400 font-bold">Memproses data...</div>');
+<<<<<<< HEAD
         $.get(`<?= site_url('faq/ajax') ?>/${id}`, function(res) {
+=======
+        $.get(`<?= base_url('faq/ajax') ?>/${id}`, function(res) {
+>>>>>>> origin/data-troubleshoot
             if(res.success && res.faqs.length > 0) {
                 let html = '<div class="accordion" id="faqAccordion">';
                 res.faqs.forEach((faq, i) => {
@@ -222,6 +226,7 @@ $(document).ready(function() {
                 html += '</div>';
                 $('#faqList').html(html);
             } else {
+<<<<<<< HEAD
                 $('#faqList').html('<div class="glass-card p-20 text-center text-slate-400">Tiada FAQ dijumpai untuk servis ini.</div>');
             }
         }).fail(function(xhr) {
@@ -230,11 +235,23 @@ $(document).ready(function() {
         });
     }
 
+=======
+                $('#faqList').html('<div class="glass-card p-20 text-center">...</div>');
+            }
+        });
+    }
+
+    //ADD FAQ POPUP
+>>>>>>> origin/data-troubleshoot
     $('#btnCreateFaq').click(function() {
         const idServis = $('#dropdownServis').val();
         Swal.fire({
             title: '<span class="text-2xl font-bold">Tambah FAQ Baru</span>',
+<<<<<<< HEAD
             showCloseButton: true,
+=======
+            showCloseButton: true, // ICON X ADA KAT SINI
+>>>>>>> origin/data-troubleshoot
             html: `
                 <div class="text-left mt-4">
                     <label class="block text-sm font-bold text-slate-700 mb-2">Soalan</label>
@@ -246,15 +263,28 @@ $(document).ready(function() {
             showCancelButton: true,
             confirmButtonText: 'Simpan Rekod',
             cancelButtonText: 'Batal',
+<<<<<<< HEAD
             customClass: { popup: 'swal-rounded', confirmButton: 'btn-swal-hantar', cancelButton: 'btn-swal-batal' },
             preConfirm: () => {
                 const q = document.getElementById('swal-question').value;
                 const a = document.getElementById('swal-answer').value;
                 if (!q || !a) { Swal.showValidationMessage('Sila isi semua!'); return false; }
+=======
+            customClass: {
+                popup: 'swal-rounded',
+                confirmButton: 'btn-swal-hantar',
+                cancelButton: 'btn-swal-batal'
+            },
+            preConfirm: () => {
+                const q = document.getElementById('swal-question').value;
+                const a = document.getElementById('swal-answer').value;
+                if (!q || !a) { Swal.showValidationMessage('Sila isi semua!'); }
+>>>>>>> origin/data-troubleshoot
                 return { question: q, answer: a, idservis: idServis };
             }
         }).then((result) => {
             if (result.isConfirmed) {
+<<<<<<< HEAD
                 $.post('<?= base_url('faq/save') ?>', result.value, function(res) {
                     Swal.fire('Berjaya!', res.message, 'success');
                     loadFaq(idServis);
@@ -267,15 +297,28 @@ $(document).ready(function() {
                         title: 'Ralat',
                         text: errorMsg
                     });
+=======
+                $.post('<?= base_url('faq/save') ?>', result.value, function() {
+                    Swal.fire({ title: 'Berjaya!', icon: 'success', customClass: { popup: 'swal-rounded' } });
+                    loadFaq(idServis);
+>>>>>>> origin/data-troubleshoot
                 });
             }
         });
     });
 
+<<<<<<< HEAD
     window.openEditModal = function(id, question, answer) {
         Swal.fire({
             title: '<span class="text-2xl font-bold">Kemaskini FAQ</span>',
             showCloseButton: true,
+=======
+    //EDIT FAQ POPUP
+    window.openEditModal = function(id, question, answer) {
+        Swal.fire({
+            title: '<span class="text-2xl font-bold">Kemaskini FAQ</span>',
+            showCloseButton: true, // ICON X ADA KAT SINI JUGA
+>>>>>>> origin/data-troubleshoot
             html: `
                 <div class="text-left mt-4">
                     <label class="block text-sm font-bold text-slate-700 mb-2">Soalan</label>
@@ -287,16 +330,32 @@ $(document).ready(function() {
             showCancelButton: true,
             confirmButtonText: 'Kemaskini',
             cancelButtonText: 'Batal',
+<<<<<<< HEAD
             customClass: { popup: 'swal-rounded', confirmButton: 'btn-swal-hantar', cancelButton: 'btn-swal-batal' },
             preConfirm: () => {
                 const q = document.getElementById('swal-question').value;
                 const a = document.getElementById('swal-answer').value;
                 if (!q || !a) { Swal.showValidationMessage('Isi semua!'); return false; }
+=======
+            customClass: {
+                popup: 'swal-rounded',
+                confirmButton: 'btn-swal-hantar',
+                cancelButton: 'btn-swal-batal'
+            },
+            preConfirm: () => {
+                const q = document.getElementById('swal-question').value;
+                const a = document.getElementById('swal-answer').value;
+                if (!q || !a) { Swal.showValidationMessage('Isi semua!'); }
+>>>>>>> origin/data-troubleshoot
                 return { id: id, question: q, answer: a };
             }
         }).then((result) => {
             if (result.isConfirmed) {
+<<<<<<< HEAD
                 $.post(`<?= site_url('faq/update') ?>/${result.value.id}`, result.value, function() {
+=======
+                $.post(`<?= base_url('faq/update') ?>/${result.value.id}`, result.value, function() {
+>>>>>>> origin/data-troubleshoot
                     Swal.fire({ title: 'Berjaya!', icon: 'success', customClass: { popup: 'swal-rounded' } });
                     loadFaq($('#dropdownServis').val());
                 });
@@ -319,16 +378,26 @@ $(document).ready(function() {
     window.deleteFaq = function(id) {
         Swal.fire({
             title: 'Padam FAQ?',
+<<<<<<< HEAD
             text: "Perbuatan ini akan memadam FAQ ini secara kekal",
             icon: 'warning',
             showCancelButton: true,
+=======
+            text: "Perbuatan ini akan memadam FAQ ini secara kekal", icon: 'warning',
+            showCancelButton: true,
+            showCloseButton: true,
+>>>>>>> origin/data-troubleshoot
             confirmButtonText: 'Ya, Padam',
             cancelButtonText: 'Batal',
             customClass: { popup: 'swal-rounded', confirmButton: 'btn-swal-hantar', cancelButton: 'btn-swal-batal' }
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
+<<<<<<< HEAD
                     url: `<?= site_url('faq/delete') ?>/${id}`,
+=======
+                    url: `<?= base_url('faq/delete') ?>/${id}`,
+>>>>>>> origin/data-troubleshoot
                     method: 'DELETE',
                     success: function() { 
                         loadFaq($('#dropdownServis').val());
@@ -345,7 +414,10 @@ $(document).ready(function() {
             $(this).toggle($(this).text().toLowerCase().indexOf(v) > -1)
         });
     });
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/data-troubleshoot
 });
 </script>
 
