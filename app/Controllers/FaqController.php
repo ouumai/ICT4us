@@ -4,7 +4,10 @@ namespace App\Controllers;
 
 use App\Models\FaqModel;
 use App\Models\ServisModel;
-use CodeIgniter\API\ResponseTrait; // Guna trait untuk response JSON lebih standard
+use App\Controllers\BaseController;
+use CodeIgniter\API\ResponseTrait;
+
+
 
 class FaqController extends BaseController
 {

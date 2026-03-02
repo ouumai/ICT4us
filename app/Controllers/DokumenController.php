@@ -4,7 +4,9 @@ namespace App\Controllers;
 
 use App\Models\DokumenModel;
 use App\Models\ServisModel;
+use App\Controllers\BaseController;
 use CodeIgniter\API\ResponseTrait;
+
 
 class DokumenController extends BaseController
 {
