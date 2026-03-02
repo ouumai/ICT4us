@@ -4,6 +4,7 @@ namespace App\Controllers;
 use App\Models\DokumenModel;
 use App\Models\ServisModel;
 use App\Models\ApprovalDokumenModel;
+use App\Controllers\BaseController;
 
 class ApprovalDokumenController extends BaseController
 {

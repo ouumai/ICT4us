@@ -4,7 +4,10 @@ namespace App\Controllers;
 
 use App\Models\FaqModel;
 use App\Models\ServisModel;
+use App\Controllers\BaseController;
 use CodeIgniter\API\ResponseTrait;
+
+
 
 class FaqController extends BaseController
 {
