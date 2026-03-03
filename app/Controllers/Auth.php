@@ -151,20 +151,53 @@ class Auth extends BaseController
     public function processStep1()
     {
         $email = $this->request->getPost('email');
-
-        // 1. Check kalau emel wujud dalam database
         $model = new UserModel();
         $user = $model->where('email', $email)->first();
 
         if (!$user) {
-            return redirect()->back()->withInput()->with('error', 'Emel tidak dijumpai dalam sistem.');
+            return redirect()->back()->withInput()->with('error', 'Emel tidak dijumpai.');
         }
 
-        // 2. Simpan emel dalam session supaya Step 2 kenal user
-        session()->set('reset_email', $email);
+        // 1. Generate Token & Timestamp
+        $token = rand(100000, 999999);
+        session()->set([
+            'reset_token'      => $token,
+            'reset_email'      => $email,
+            'token_created_at' => time() // Masa mula untuk kiraan 5 minit
+        ]);
 
-        // 3. Terus ke Page 2 (Check Emel)
-        return redirect()->to('forgot/step2');
+        // 2. Setup Email Service
+        $emailService = \Config\Services::email();
+        $emailService->setTo($email);
+        $emailService->setSubject('Kod Keselamatan ICT4U');
+
+        // 3. Template HTML dengan Amaran 5 Minit
+        $message = "
+        <div style='font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;'>
+            <div style='max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 10px; border: 1px solid #ddd;'>
+                <h2 style='color: #333; text-align: center;'>Sistem ICT4U</h2>
+                <hr style='border: 0; border-top: 1px solid #eee;'>
+                <p style='font-size: 16px; color: #555;'>Hai <strong>{$user['fullname']}</strong>,</p>
+                <p style='font-size: 16px; color: #555;'>Sila gunakan kod pengesahan di bawah untuk set semula kata laluan anda:</p>
+                
+                <div style='background-color: #e7f3ff; border: 1px dashed #007bff; padding: 20px; text-align: center; margin: 20px 0; border-radius: 8px;'>
+                    <h1 style='color: #4f46e5; font-size: 38px; letter-spacing: 8px; margin: 0;'>$token</h1>
+                </div>
+
+                <p style='font-size: 14px; color: #ed213a; text-align: center; font-size: 14px; margin-top: 10px;'><strong>Kod ini hanya sah untuk 5 minit sahaja.</strong></p>
+                <p style='font-size: 13px; color: #888; text-align: center;'>Jika anda tidak meminta kod ini, sila abaikan emel ini.</p>
+            </div>
+        </div>
+        ";
+
+        $emailService->setMessage($message);
+
+        // 4. Hantar & Redirect (Tanpa Debugger Luaran)
+        if ($emailService->send()) {
+            return redirect()->to('forgot/step2')->with('success', 'Kod telah dihantar! Sila semak emel anda segera.');
+        } else {
+            return redirect()->back()->with('error', 'Gagal menghantar emel. Sila cuba sebentar lagi.');
+        }
     }
 
     public function forgotStep2()
@@ -176,16 +209,33 @@ class Auth extends BaseController
         return view('form/step2_forgot_password');
     }
 
-    public function processStep2()
+  public function processStep2()
     {
-        $token = $this->request->getPost('token');
+        $tokenInput = $this->request->getPost('token');
+        $tokenSession = session()->get('reset_token');
+        $createdAt = session()->get('token_created_at');
+        $currentTime = time();
 
-        // "hardcode" kod 123456 dulu untuk test
-        if ($token === '123456') {
+        // 1. Check kalau session dah hilang atau tak wujud
+        if (!$tokenSession || !$createdAt) {
+            return redirect()->to('forgot/step1')->with('error', 'Sesi telah tamat. Sila minta kod baru.');
+        }
+
+        // 2. Kira beza masa: 5 minit = 300 saat
+        if (($currentTime - $createdAt) > 300) {
+            // Padam session lama sebab dah expired
+            session()->remove(['reset_token', 'token_created_at']);
+            return redirect()->to('forgot/step1')->with('error', 'Kod pengesahan telah tamat tempoh (lebih 5 minit).');
+        }
+
+        // 3. Check token betul atau salah
+        if ($tokenInput == $tokenSession) {
+            // Jangan buang reset_email lagi, cuma buang token & masa
+            session()->remove(['reset_token', 'token_created_at']); 
             return redirect()->to('forgot/step3');
         }
 
-        return redirect()->back()->with('error', 'Token salah! Sila check emel anda.');
+        return redirect()->back()->with('error', 'Kod pengesahan salah! Sila semak emel anda.');
     }
 
    public function forgotStep3()
