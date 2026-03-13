@@ -1,4 +1,4 @@
-# ICT4us - Industrial Training Project (PTM UKM)
+# ICT4us - Industrial Training Project (DigitalUKM)
 
 This project is part of an industrial training program at **Pusat Teknologi Digital @ UKM**. It is developed using the **CodeIgniter 4** framework.
 
